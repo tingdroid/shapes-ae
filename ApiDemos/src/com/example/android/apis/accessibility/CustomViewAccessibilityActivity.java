@@ -31,7 +31,6 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
-
 import com.example.android.apis.R;
 
 /**
@@ -143,7 +142,7 @@ public class CustomViewAccessibilityActivity extends Activity {
             // AccessibilityDelegate allows clients to override its methods that
             // correspond to the accessibility methods in View and register the
             // delegate in the View essentially injecting the accessibility support.
-            setAccessibilityDelegate(new AccessibilityDelegate() {
+            setAccessibilityDelegate(new View.AccessibilityDelegate() {
                 @Override
                 public void onInitializeAccessibilityEvent(View host, AccessibilityEvent event) {
                     super.onInitializeAccessibilityEvent(host, event);
