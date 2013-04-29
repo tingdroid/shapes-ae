@@ -1,8 +1,9 @@
 package com.ting.tingconsole;
 
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.Menu;
+import android.widget.EditText;
 
 public class Console extends Activity {
 
@@ -10,6 +11,11 @@ public class Console extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.console);
+		
+		EditText mConsoleText = (EditText) this.findViewById(R.id.consoleText);
+
+		// workaround for android:scrollHorizontally="true"
+		mConsoleText.setHorizontallyScrolling(true);
 	}
 
 	@Override
