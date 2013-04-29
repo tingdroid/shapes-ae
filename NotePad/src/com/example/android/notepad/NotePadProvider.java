@@ -16,15 +16,21 @@
 
 package com.example.android.notepad;
 
-import com.example.android.notepad.NotePad;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 
 import android.content.ClipDescription;
 import android.content.ContentProvider;
+import android.content.ContentProvider.PipeDataWriter;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
-import android.content.ContentProvider.PipeDataWriter;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -35,17 +41,8 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
-import android.provider.LiveFolders;
 import android.text.TextUtils;
 import android.util.Log;
-
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
 
 /**
  * Provides access to a database of notes. Each note has a title, the note
@@ -71,11 +68,6 @@ public class NotePadProvider extends ContentProvider implements PipeDataWriter<C
     private static HashMap<String, String> sNotesProjectionMap;
 
     /**
-     * A projection map used to select columns from the database
-     */
-    private static HashMap<String, String> sLiveFolderProjectionMap;
-
-    /**
      * Standard projection for the interesting columns of a normal note.
      */
     private static final String[] READ_NOTE_PROJECTION = new String[] {
@@ -95,9 +87,6 @@ public class NotePadProvider extends ContentProvider implements PipeDataWriter<C
 
     // The incoming URI matches the Note ID URI pattern
     private static final int NOTE_ID = 2;
-
-    // The incoming URI matches the Live Folder URI pattern
-    private static final int LIVE_FOLDER_NOTES = 3;
 
     /**
      * A UriMatcher instance
@@ -126,10 +115,6 @@ public class NotePadProvider extends ContentProvider implements PipeDataWriter<C
         // to a note ID operation
         sUriMatcher.addURI(NotePad.AUTHORITY, "notes/#", NOTE_ID);
 
-        // Add a pattern that routes URIs terminated with live_folders/notes to a
-        // live folder operation
-        sUriMatcher.addURI(NotePad.AUTHORITY, "live_folders/notes", LIVE_FOLDER_NOTES);
-
         /*
          * Creates and initializes a projection map that returns all columns
          */
@@ -156,19 +141,6 @@ public class NotePadProvider extends ContentProvider implements PipeDataWriter<C
                 NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE,
                 NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE);
 
-        /*
-         * Creates an initializes a projection map for handling Live Folders
-         */
-
-        // Creates a new projection map instance
-        sLiveFolderProjectionMap = new HashMap<String, String>();
-
-        // Maps "_ID" to "_ID AS _ID" for a live folder
-        sLiveFolderProjectionMap.put(LiveFolders._ID, NotePad.Notes._ID + " AS " + LiveFolders._ID);
-
-        // Maps "NAME" to "title AS NAME"
-        sLiveFolderProjectionMap.put(LiveFolders.NAME, NotePad.Notes.COLUMN_NAME_TITLE + " AS " +
-            LiveFolders.NAME);
     }
 
     /**
@@ -278,11 +250,6 @@ public class NotePadProvider extends ContentProvider implements PipeDataWriter<C
                    uri.getPathSegments().get(NotePad.Notes.NOTE_ID_PATH_POSITION));
                break;
 
-           case LIVE_FOLDER_NOTES:
-               // If the incoming URI is from a live folder, chooses the live folder projection.
-               qb.setProjectionMap(sLiveFolderProjectionMap);
-               break;
-
            default:
                // If the URI doesn't match any of the known patterns, throw an exception.
                throw new IllegalArgumentException("Unknown URI " + uri);
@@ -337,9 +304,8 @@ public class NotePadProvider extends ContentProvider implements PipeDataWriter<C
         */
        switch (sUriMatcher.match(uri)) {
 
-           // If the pattern is for notes or live folders, returns the general content type.
+           // If the pattern is for notes, returns the general content type.
            case NOTES:
-           case LIVE_FOLDER_NOTES:
                return NotePad.Notes.CONTENT_TYPE;
 
            // If the pattern is for note IDs, returns the note ID content type.
@@ -377,10 +343,9 @@ public class NotePadProvider extends ContentProvider implements PipeDataWriter<C
          */
         switch (sUriMatcher.match(uri)) {
 
-            // If the pattern is for notes or live folders, return null. Data streams are not
+            // If the pattern is for notes, return null. Data streams are not
             // supported for this type of URI.
             case NOTES:
-            case LIVE_FOLDER_NOTES:
                 return null;
 
             // If the pattern is for note IDs and the MIME filter is text/plain, then return
