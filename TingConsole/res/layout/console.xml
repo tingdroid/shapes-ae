@@ -14,12 +14,13 @@
         android:ems="10"
      -->
     
-    <EditText
+    <com.ting.tingconsole.ActionEditText
         android:id="@+id/consoleText"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fadingEdge="vertical"
         android:gravity="top"
+        android:imeOptions="actionGo"
         android:inputType="textMultiLine|textNoSuggestions"
         android:lineSpacingExtra="@dimen/test_line_spacing_extra"
         android:paddingBottom="@dimen/text_vertical_padding"
@@ -32,6 +33,6 @@
         android:typeface="monospace" >
 
         <requestFocus />
-    </EditText>
+    </com.ting.tingconsole.ActionEditText>
 
 </RelativeLayout>

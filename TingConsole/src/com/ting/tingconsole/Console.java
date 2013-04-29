@@ -15,19 +15,22 @@ import android.widget.TextView.OnEditorActionListener;
 
 public class Console extends Activity {
 	
-	EditText mConsoleText = null;
+	ActionEditText mConsoleText = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.console);
 		
-		mConsoleText = (EditText) this.findViewById(R.id.consoleText);
+		mConsoleText = (ActionEditText) this.findViewById(R.id.consoleText);
 
 		// workaround for android:scrollHorizontally="true"
 		mConsoleText.setHorizontallyScrolling(true);
 		
 		mConsoleText.setOnEditorActionListener(mEditorActionListener);
+		
+		int imeOptions = mConsoleText.getImeOptions();
+		mConsoleText.setImeOptions(imeOptions &~ EditorInfo.IME_FLAG_NO_ENTER_ACTION);
 	}
 
 	@Override
@@ -40,18 +43,20 @@ public class Console extends Activity {
 	private TextView.OnEditorActionListener mEditorActionListener = new OnEditorActionListener() {
 	    @Override
 	    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-	    	Log.d(getLocalClassName(), event.toString());
-	        boolean handled = false;
-	        if (actionId == EditorInfo.IME_ACTION_SEND) {
-	            // sendMessage();
-	            handled = true;
+	    	Log.d(getLocalClassName(), event == null ? "Action: "+actionId : event.toString());
+	        if (actionId == EditorInfo.IME_ACTION_GO) {
+        		handleEnter();
+	            return true;
 	        } else {
+	        	if (event == null)
+	        		return false;
+	        	
 	        	if (event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
 	        		handleEnter();
-	        		handled = true;
+	        		return true;
 	        	}
 	        }
-	        return handled;
+	        return false;
 	    }
 	};
 	
