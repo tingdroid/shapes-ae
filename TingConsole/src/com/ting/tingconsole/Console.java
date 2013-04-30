@@ -70,8 +70,8 @@ public class Console extends Activity {
 	
 	private void evalEntry(Entry entry) {
 		String input = entry.getText().toString();
-		String result = input.trim();
-		entry.appendClear("["+result+"]\n   ");
+		String result = "["+input.trim()+"]";
+		entry.appendClear(result+"\n" + "   ");
 	}
 
 }
