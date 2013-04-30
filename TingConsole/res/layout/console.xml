@@ -8,31 +8,38 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".Console" >
 
-    <!-- 
+    <!--
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:ems="10"
-     -->
-    
-    <com.ting.tingconsole.ActionEditText
-        android:id="@+id/consoleText"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fadingEdge="vertical"
-        android:gravity="top"
-        android:imeOptions="actionGo"
-        android:inputType="textMultiLine|textNoSuggestions"
-        android:lineSpacingExtra="@dimen/test_line_spacing_extra"
-        android:paddingBottom="@dimen/text_vertical_padding"
-        android:paddingLeft="@dimen/text_horizontal_padding"
-        android:paddingRight="@dimen/text_horizontal_padding"
-        android:paddingTop="@dimen/text_vertical_padding"
-        android:scrollHorizontally="true"
-        android:scrollbars="horizontal|vertical"
-        android:text="@string/consoleText"
-        android:typeface="monospace" >
+        android:fadingEdge="vertical"        android:background="@null"
+    -->
 
-        <requestFocus />
-    </com.ting.tingconsole.ActionEditText>
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <com.ting.tingconsole.ActionEditText
+            android:id="@+id/consoleText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:imeOptions="actionGo"
+            android:inputType="textMultiLine|textNoSuggestions"
+            android:lineSpacingExtra="@dimen/test_line_spacing_extra"
+            android:overScrollMode="ifContentScrolls"
+            android:paddingBottom="@dimen/text_vertical_padding"
+            android:paddingLeft="@dimen/text_horizontal_padding"
+            android:paddingRight="@dimen/text_horizontal_padding"
+            android:paddingTop="@dimen/text_vertical_padding"
+            android:scrollHorizontally="true"
+            android:scrollbars="horizontal|vertical"
+            android:text="@string/consoleText"
+            android:typeface="monospace" >
+
+            <requestFocus />
+        </com.ting.tingconsole.ActionEditText>
+    </ScrollView>
 
 </RelativeLayout>

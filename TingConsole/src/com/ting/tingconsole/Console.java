@@ -28,9 +28,6 @@ public class Console extends Activity {
 		mConsoleText.setHorizontallyScrolling(true);
 		
 		mConsoleText.setOnEditorActionListener(mEditorActionListener);
-		
-		int imeOptions = mConsoleText.getImeOptions();
-		mConsoleText.setImeOptions(imeOptions &~ EditorInfo.IME_FLAG_NO_ENTER_ACTION);
 	}
 
 	@Override
