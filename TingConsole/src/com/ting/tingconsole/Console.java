@@ -2,14 +2,10 @@ package com.ting.tingconsole;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.Layout;
-import android.text.Selection;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
@@ -58,42 +54,24 @@ public class Console extends Activity {
 	};
 	
 	private void handleEnter() {
-		int selectionLine = getSelectionLine(mConsoleText);
-		if (selectionLine < 0) return;
+		Entry entry = new Entry(mConsoleText);
+		if (!entry.isValid()) return;
 
-		int lineCount = mConsoleText.getLineCount();
-		if (lineCount <= 0) return;
-
-		if (selectionLine == lineCount - 1) {
-			evalEntry();
+		if (entry.isLastLine()) {
+			evalEntry(entry);
 		} else {
-			copyEntry();
+			copyEntry(entry);
 		}
-		selectEnd();
 	}
 	
-	private void copyEntry() {
-		mConsoleText.append("\n[COPY]\n   ");
+	private void copyEntry(Entry entry) {
+		entry.appendClear(entry.getText());
 	}
 	
-	private void evalEntry() {
-		mConsoleText.append("\n[EVAL]\n   ");
+	private void evalEntry(Entry entry) {
+		String input = entry.getText().toString();
+		String result = input.trim();
+		entry.appendClear("["+result+"]\n   ");
 	}
 
-	private void selectEnd() {
-		Selection.setSelection(mConsoleText.getText(), mConsoleText.length());
-	}
-	
-	public static int getSelectionLine(EditText editText)
-	{    
-	    if (editText == null) return -1;
-
-	    int selectionStart = Selection.getSelectionEnd(editText.getText());
-	    if (selectionStart < 0) return -1;
-
-	    Layout layout = editText.getLayout();
-	    if (layout == null) return -1;
-
-	    return layout.getLineForOffset(selectionStart);
-	}	
 }
