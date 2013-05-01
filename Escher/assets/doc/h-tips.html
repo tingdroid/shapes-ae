@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!--
+ * h-tips.html
+ * 
+ * This file is part of GeomLab
+ * Copyright (c) 2005 J. M. Spivey
+ * All rights reserved
+ * 
+ * Redistribution and use in source and binary forms, with or without 
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright notice, 
+ *    this list of conditions and the following disclaimer.      
+ * 2. Redistributions in binary form must reproduce the above copyright notice, 
+ *    this list of conditions and the following disclaimer in the documentation 
+ *    and/or other materials provided with the distribution.
+ * 3. The name of the author may not be used to endorse or promote products 
+ *    derived from this software without specific prior written permission.
+ *    
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR 
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+ * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<html>
+<head>
+<title>Hints and tips</title>
+<link rel="stylesheet" href="style.css">
+<meta name="section" content="using">
+</head>
+<body>
+<h1>Hints and tips</h1>
+
+<ol>
+  <li>To make it easier to match parentheses in complex expressions,
+    turn on the option 'Options/Match brackets'. Typing a
+    '<code>)</code>' or '<code>]</code>' will now momentarily
+    underline the region up to the matching '<code>(</code>' or
+    '<code>[</code>' in blue. If brackets do not match properly
+    -- because '<code>(</code>' is closed by
+    '<code>]</code>' or there are more '<code>)</code>'s than
+    '<code>(</code>'s -- then the region is underlined in
+    red.</li>
+  <li>To get back previous expressions so that you can edit them and
+    submit them again, use the buttons marked '<code>&lt;</code>' and
+    '<code>&gt;</code>', or type <code>Ctrl-P</code> and 
+    <code>Ctrl-N</code> 
+    -- for Previous and Next -- in the text entry box. These buttons and
+    keystrokes move backwards and forwards in a list of previously-entered
+    expressions.</li>
+  <li>The variable &quot;<code>it</code>&quot; always stands for the
+    value of the last 
+    expression to be entered. You can type an expression such as
+    &quot;<code>it 
+    + 9</code>&quot; to use this value in a further calculation.</li>
+  <li>To see a larger version of any picture, resize or maximize the Picture
+    window (by dragging its corner or double-clicking on its title bar).
+    The picture will be redrawn to occupy as much as possible of the space in
+    the resized window.</li>
+  <li>If you want to change a function definition that you made earlier, there
+    are several ways to retrieve the text so that you can edit it:
+    <ul>
+      <li>Use the buttons marked '<code>&lt;</code>' and
+    '<code>&gt;</code>' -- or any of 
+        the equivalent methods -- to find the definition in the history.</li>
+      <li>Scroll through the upper pane of GeomLab's window using the
+        scroll bar 
+        on the right, select the definition that you want and copy it to the
+        clipboard with <code>Ctrl-C</code>, then paste it into the
+        bottom pane by 
+        clicking with the mouse and typing <code>Ctrl-V</code>.</li>
+      <li>Type the name of the function in the bottom pane and choose the
+        command 'Tools/Find definition'. The text of the definition will
+        replace the name in the bottom pane.</li>
+    </ul>
+  </li>
+  <li>To find a list of all the names that are defined, choose the command
+    'Tools/List defined names'. A list of all the names you can use in
+    expressions will be inserted into the output pane.</li>
+  <li>To get some idea of how much calculation is needed to evaluate your
+    expressions, you can ask GeomLab to count the number of steps needed to
+    reach an answer. Choose the command 'Options/Count reduction steps',
+    and GeomLab will display the number of steps together with the
+    answer. These step counts don't mean much by themselves, but you
+    can look at how 
+    fast they grow as you apply functions to larger arguments.</li>
+</ol>
+</body>
+</html>

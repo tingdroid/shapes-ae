@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!--
+ * h-commands.html
+ * 
+ * This file is part of GeomLab
+ * Copyright (c) 2005 J. M. Spivey
+ * All rights reserved
+ * 
+ * Redistribution and use in source and binary forms, with or without 
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright notice, 
+ *    this list of conditions and the following disclaimer.      
+ * 2. Redistributions in binary form must reproduce the above copyright notice, 
+ *    this list of conditions and the following disclaimer in the documentation 
+ *    and/or other materials provided with the distribution.
+ * 3. The name of the author may not be used to endorse or promote products 
+ *    derived from this software without specific prior written permission.
+ *    
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR 
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+ * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<html>
+<head>
+<title>GeomLab commands</title>
+<link rel="stylesheet" href="style.css">
+<meta name="section" content="using">
+</head>
+<body>
+<h1>GeomLab commands</h1>
+
+<h2>File Menu</h2>
+
+<dl>
+<dt>Load ...</dt>
+<dd>Displays a dialog that allows you to choose a text file containing
+expressions and definitions that is then loaded into GeomLab.</dd>
+
+<dt>Load session ...</dt>
+<dd>Displays a dialog that allows you to choose a file containing a saved
+GeomLab session (extension .gls) to be loaded into GeomLab.  When a saved
+session is loaded, all definitions that have been made in the current session
+are lost, unless you first saved the session in a file.</dd>
+
+<dt>Save session ...</dt>
+<dd>Displays a dialog that allows you to choose the name of a file (with
+extension .gls); all the definitions in the current GeomLab session are saved
+in the file, so that they can subsequently be re-loaded with 
+"Load session ...".
+The '.gls' file that results cannot be opened with a normal text editor,
+but the text of the definitions is not lost, and can be accessed again after
+the file is loaded into GeomLab.</dd>
+
+<dt>Print image ...</dt>
+<dd>Displays a print dialog for sending the current image to a printer.</dd>
+
+<dt>Image setup ...</dt>
+<dd>Displays a dialog that allows you to choose the 'mean size' used for
+subsequent "Save image ..." commands.  When an image is saved, the width
+and height of the image in pixels is chosen so that they have approximately
+the right ratio to suit the picture, and so that the product of the width
+and height is approximately the square of the mean size chosen here.</dd>
+
+<dt>Save image ...</dt>
+<dd>Displays a dialog that allows you to choose the name of a file; the
+current image is then saved in the file in Portable Network Graphics ('.png')
+format.  This format can be displayed by all modern graphics programs and web
+browsers.
+
+<dt>Exit</dt>
+<dd>Exits from GeomLab.  All definitions that have not been saved are 
+lost.</dd>
+</dl>
+
+<h2>Tools menu</h2>
+
+<dl>
+<dt>Evaluate expression</dt>
+<dd>Submits the expression currently in the bottom pane for evaluation by
+GeomLab.  Alternatives to this command are to press
+<code>Shift-Return</code> while typing in the bottom pane, and to
+click on the "Go" button next to the bottom pane.</dd>
+
+<dt>List defined names</dt>
+<dd>Pastes a list of all names that have been defined in the interpreter --
+both those that are part of the GeomLab library, and those that have been defined during
+the current session -- into the top pane.</dd>
+
+<dt>Find definition</dt>
+<dd>Before invoking this command, you should type a single name into
+the bottom pane.  The command finds the text that defines this name, and 
+inserts the text into the bottom pane in place of the name that you typed.
+This definition can then be edited before submitting it to GeomLab again;
+this is a good way to fix minor errors.  Note that names that are
+pre-defined do not have a defining text.</dd>
+</dl>
+
+<h2>Options menu</h2>
+
+<dl>
+<dt>Match brackets</dt>
+<dd>If this option is enabled, then each closing bracket 
+(either ')' or&nbsp;']') that
+is typed in the bottom pane highlights all the text back to the matching
+opening bracket with a blue line.
+If the brackets do not match properly,
+or there are more closing than opening brackets, then the line appears in red
+instead.  This option makes it easier to type complicated expressions,
+especially ones that end with a lot of closing brackets.</dd>
+
+<dt>Count reduction steps</dt>
+<dd>If this option is enabled, then GeomLab counts the number of 'reduction
+steps' that are needed to evaluate each expression, and displays the total
+together with the value of the expression.</dd>
+
+<dt>Use larger font</dt>
+<dd>This option increases the size of the text in the two panes of the
+main GeomLab window.</dd>
+
+<dt>Smoother screen display</dt>
+<dd>This option causes GeomLab to use a more refined method for drawing both
+the text in the main window and the lines that appear in the picture display.
+This gives a more pleasing result at the expense of being slower.
+The more refined method is always used when images are saved in a file
+or sent for printing, so this option has no effect on the saved or printed
+results.</dd>
+</dl>
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!--
+ * h-library.html
+ * 
+ * This file is part of GeomLab
+ * Copyright (c) 2005 J. M. Spivey
+ * All rights reserved
+ * 
+ * Redistribution and use in source and binary forms, with or without 
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright notice, 
+ *    this list of conditions and the following disclaimer.      
+ * 2. Redistributions in binary form must reproduce the above copyright notice, 
+ *    this list of conditions and the following disclaimer in the documentation 
+ *    and/or other materials provided with the distribution.
+ * 3. The name of the author may not be used to endorse or promote products 
+ *    derived from this software without specific prior written permission.
+ *    
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR 
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+ * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<html>
+<head>
+<title>The GeomLab library</title>
+<link rel="stylesheet" href="style.css">
+<meta name="section" content="using">
+</head>
+<body>
+<h1>The GeomLab library</h1>
+
+<p>Here is a list of the names that are defined when GeomLab starts.  These are
+the names that you can initially used in expressions, both constants that
+stand for values themselves, and functions that can be applied to other values.
+Also included in the list are the operators that can be used in 
+expressions.</p>
+
+<h2>Numeric functions and operators</h2>
+
+<dl>
+<dt><code>x + y</code>, <code>x - y</code>, <code>x * y</code>, 
+<code>x / y</code></dt>
+<dd>Arithmetic operators.</dd>
+
+<dt><code>- x</code>, <code>~ x</code></dt>
+<dd>The negative of the number x.  Either notation is accepted.</dd>
+
+<dt><code>x &lt; y</code>, <code>x &lt;= y</code>, <code>x = y</code>, 
+<code>x &lt;&gt; y</code>, <code>x &gt;= y</code>, <code>x &gt; y</code></dt>
+<dd>Comparison operators.  These compare two numbers and yield a Boolean:
+either true or false.</dd>
+
+<dt><code>int(x)</code></dt>
+<dd>The integer part of the number&nbsp;<code>x</code>.  This is the
+greatest integer <code>n</code> such that 
+<code>n &lt;= x</code>; it has the property that if <code>k</code> is
+any integer, then <code>k &lt;= x</code> if and 
+only if <code>k &lt;= n</code>.  (EWD)</dd>
+
+<dt><code>x div y</code>, <code>x mod y</code></dt>
+<dd>Integer division and remainder.  These are defined by
+<code>x div y = int(x/y)</code> and 
+<code>x mod y = x - y * (x div y)</code>.</dd>
+
+<dt><code>sqrt(x)</code></dt>
+<dd>The square root of&nbsp;<code>x</code>.</dd>
+
+<dt><code>sin(x)</code>, <code>cos(x)</code>, <code>tan(x)</code></dt>
+<dd>Trigonometric functions.  These expect an argument in degrees.</dd>
+
+<dt><code>numeric(x)</code></dt>
+<dd>Yields <code>true</code> if <code>x</code> is a number,
+<code>false</code> otherwise.</dd> 
+</dl>
+
+<h2>Booleans</h2>
+
+<dl>
+<dt><code>true</code>, <code>false</code></dt>
+<dd>The two Boolean constants.</dd>
+
+<dt><code>not p</code>, <code>p and q</code>, <code>p or q</code></dt>
+<dd>Boolean operators.  Note that <code>and</code> and <code>or</code>
+evaluate only their
+left-hand argument if that is enough to determine the result.</dd>
+</dl>
+
+<h2>Lists</h2>
+
+<dl>
+<dt><code>x : xs</code></dt>
+<dd>The list obtained by adding <code>x</code> to the beginning of the
+list <code>xs</code> as a new first element.</dd>
+
+<dt><code>head(xs)</code></dt>
+<dd>If <code>xs</code> is a non-empty list, the first element
+of&nbsp;<code>xs</code>.</dd>
+
+<dt><code>tail(xs)</code></dt>
+<dd>If <code>xs</code> is a non-empty list, the list that contains all
+but the first element of&nbsp;<code>xs</code>.</dd>
+
+<dt><code>xs @ ys</code></dt>
+<dd>The list containing all elements of list <code>xs</code>, followed
+by all elements of list&nbsp;<code>ys</code>.</dd>
+
+<dt><code>reverse(xs)</code></dt>
+<dd>The list containing the same elements as list <code>xs</code>, but
+in reverse order.</dd>
+
+<dt><code>length(xs)</code></dt>
+<dd>The length of the list&nbsp;<code>xs</code>.</dd>
+</dl>
+
+<h2>Pictures</h2>
+
+<dl>
+<dt><code>blank</code></dt>
+<dd>A square picture that is completely blank</dd>
+
+<dt><code>null</code></dt>
+<dd>The null picture.  This has the properties that
+<code>null $ p = p = p $ null</code>
+and
+<code>null & p = p = p & null</code>
+for all pictures&nbsp;<code>p</code>.</dd>
+
+<dt><code>solid(r, c)</code></dt>
+<dd>A picture that is a solid block of colour&nbsp;<code>c</code>.  The ratio width/height of
+the picture is the number&nbsp;<code>r</code>.</dd>
+
+<dt><code>p $ q</code></dt>
+<dd>The compound picture obtained by placing <code>p</code> beside&nbsp;<code>q</code>.  The two
+pictures are 
+scaled relative to each other so that they have the same height.</dd>
+
+<dt><code>p &amp; q</code></dt>
+<dd>The compound picture obtained by placing <code>p</code> above&nbsp;<code>q</code>.  The two
+pictures are scaled relative to each other so that they have the same
+width.</dd>
+
+<dt><code>rot(p)</code></dt>
+<dd>A copy of picture <code>p</code> rotated by anticlockwise by 90&deg;.</dd>
+
+<dt><code>flip(p)</code></dt>
+<dd>A copy of picture <code>p</code> reflected about the vertical axis.</dd>
+
+<dt><code>stretch(r, p)</code></dt>
+<dd>A copy of picture <code>p</code> that has been stretched by a scale factor
+<code>r</code> in the <code>x</code> direction.
+
+<dt><code>colour(p)</code></dt>
+<dd>A coloured copy of picture&nbsp;<code>p</code>.  Some pre-defined
+pictures (i.e., the tiles used
+in making Escher pictures) have an implicit colour scheme that is linked to
+rotations of the tiles.  If picture <code>p</code> contains such tiles, then
+<code>colour(p)</code> is a picture in which these implicit colours have been
+made visible.</dd>
+
+<dt><code>aspect(p)</code></dt>
+<dd>The aspect ratio (<i>width</i>/<i>height</i>) of 
+picture&nbsp;<code>p</code>.</dd>
+</dl>
+
+<h2>Colours</h2>
+
+<dl>
+<dt><code>rgb(r, g, b)</code></dt>
+<dd>The colour with the red, green and blue components specified.
+Each component is a number between 0 and 1; components that lie outside 
+this range are truncated.</dd>
+
+<dt><code>hsv(h, s, v)</code></dt>
+<dd>The colour with the hue, saturation and value components specified.
+Again, the components are truncated if necessary so that they lie between 
+0 and&nbsp;1.</dd>
+
+<dt><code>rpart(c), gpart(c), bpart(c)</code></dt>
+<dd>Given a colour, these functions find its red, green and blue
+components.</dd>
+</dl>
+
+<h2>Picture constants</h2>
+
+<dl>
+<dt><code>man</code>, <code>woman</code>, <code>tree</code>, 
+<code>star</code></dt>
+<dd>Stick-figures of a man, a woman, a pine tree, and a five-pointed
+star.</dd>
+
+<dt><code>A</code>, <code>B</code>, <code>C</code>, <code>D</code>, 
+<code>E</code>, <code>F</code></dt>
+<dd>Six tiles for use in drawing Escher pictures.  These have colours that
+are made visible using the primitive colour(p).</dd>
+
+<dt><code>bend</code>, <code>straight</code></dt>
+<dd>Two square tiles that respectively show a bent and a straight line.</dd>
+</dl>
+
+<h2>Turtle graphics</h2>
+<p>These functions create pictures from lists of commands that move
+  an imaginary robot or <em>turtle</em> which leaves a trail as it
+  moves.  The robot initially points to the right, and the size of
+  the resulting picture is adjusted to include the whole path of the
+  turtle.  Because of this, it is only the relative lengths of the
+  steps in the path that matter, and not their absolute value.</p>
+
+<dl>
+  <dt><code>turtle(xs)</code></dt>
+  <dd><code>xs</code> must be a list of commands, created with the
+  primitives that are listed below.  The function creates a picture
+  by obeying the commands one after another.</dd>
+
+  <dt><code>ahead(x)</code></dt>
+  <dd>Create a command that moves the turtle forward by a
+  distance <code>x</code></dd>
+
+  <dt><code>left(a), right(a)</code></dt>
+  <dd>Create commands the turn the turtle to the left or right through
+  an angle <code>a</code> in degrees.  The path of the turtle is a
+  circular arc with radius 1.</dd>
+
+  <dt>opp(c)</dt>
+  <dd>The opposite of the command <code>c</code>: if <code>c =
+  left(a)</code> then <code>opp(c) = right(a)</code>, and vice versa.
+  If <code>c = ahead(x)</code> then <code>opp(c) = ahead(x)</code> also.
+</dl>
+
+<h2>Convenience</h2>
+
+<p>The following constants and functions are included in the initial state of
+GeomLab for convenience (so that the definitions do not have to be typed in
+anew every session.  Unlike the other names listed in this document,
+each of these names can be re-defined by entering a new definition.</p>
+
+<dl>
+<dt><code>rot2(p)</code></dt>
+<dd>A copy of picture <code>p</code> rotated by 180&deg;:
+<pre>define rot2(p) = rot(rot(p))</pre></dd>
+
+<dt><code>rot3(p)</code></dt>
+<dd>A copy of picture <code>p</code> rotated anticlockwise by 270&deg;:
+<pre>define rot3(p) = rot(rot(rot(p)))</pre></dd>
+
+<dt><code>cycle(p)</code></dt>
+<dd>Four copies of picture <code>p</code>, assembled in a square pattern:
+<pre>define cycle(p) = (p $ rot3(p)) & (rot(p) $ rot2(p))</pre></dd>
+
+<dt><code>T</code>, <code>U</code></dt>
+<dd>Two tiles formed by assembling the parts <code>A</code>, <code>B</code>, <code>C</code> and&nbsp;<code>D</code>:
+<pre>define T = (A $ B) & (C $ D)
+define U = (A $ rot3(A)) & (rot(A) $ rot2(A))</pre></dd>
+
+<dt><code>frame(c, s, p)</code></dt>
+<dd>The picture obtained by surrounding a copy of <code>p</code> with
+a frame that has rotated copies of <code>s</code> at the sides and
+<code>c</code> at the corners: <pre> define frame(c, s, p) =
+    (c      $ rot3(s) $ rot3(c))
+  & (s      $ p       $ rot2(s))
+  & (rot(c) $ rot(s)  $ rot2(c))</pre></dd>
+</dl>
+</body>
+</html>

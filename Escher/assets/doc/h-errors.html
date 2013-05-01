@@ -1,0 +1,271 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!--
+ * h-errors.html
+ * 
+ * This file is part of GeomLab
+ * Copyright (c) 2005 J. M. Spivey
+ * All rights reserved
+ * 
+ * Redistribution and use in source and binary forms, with or without 
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright notice, 
+ *    this list of conditions and the following disclaimer.      
+ * 2. Redistributions in binary form must reproduce the above copyright notice, 
+ *    this list of conditions and the following disclaimer in the documentation 
+ *    and/or other materials provided with the distribution.
+ * 3. The name of the author may not be used to endorse or promote products 
+ *    derived from this software without specific prior written permission.
+ *    
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR 
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+ * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<html>
+<head>
+<title>GeomLab's error messages</title>
+<link rel="stylesheet" href="style.css">
+<meta name="section" content="using">
+</head>
+<body>
+<h1>GeomLab's error messages</h1>
+
+<p>This page lists most of the error messages that can be produced by GeomLab,
+with an explanation of the circumstances that can lead to each one.  After an
+error has occurred, you can use the command 'Help/Help after an error ...' to
+jump to the part of this page that describes the error.
+If you did exactly that, and it brought you to the top of this page, then
+either no error has occurred at all, or the message you've seen is one of
+a few that are not covered on this page.</p>
+
+<p>There are two kinds of error messages.  One kind happens because GeomLab
+can't work out how your input conforms to the rules of the language; these 
+messages begin "Oops: ...", and the expression you have typed is left in the
+bottom pane of the GeomLab window, with a highlight on the first symbol in
+your expression that GeomLab can't deal with.  Up to this point, the expression
+obeys the rules of the language, but the highlit symbol is one that can't
+possibly come next.  Usually, the error message will give some indication of
+what symbols <i>could</i> come next.</p>
+
+<p>The other kind of error message appears when you enter an expression that
+obeys the rules of the language, but GeomLab fails to compute the value
+of the expression, most likely because the expression calls for an
+operation that is impossible for one reason or another.  These messages
+begin "Aargh: ...".  GeomLab cannot point out where in your expression
+the error occurred, because it is likely to result from interactions between
+parts of your expression and definitions you have made previously.</p>
+
+<p>The labels "Oops" and "Aargh" are meant to remind you that the errors you
+make while experimenting with programming need not be
+taken too seriously.  Everyone makes mistakes!</p>
+
+<p>Here is the list of error messages:</p>
+
+<dl>
+<dt><a name="comment">Oops: unterminated comment</a></dt>
+<dd>Comments in the GeomLab language are enclosed in braces
+<code>{ ... }</code>.  Your expression contains an opening brace
+without a matching closing brace, so that all the last part of the
+expression was taken as a comment by GeomLab.</dd>
+
+<dt><a name="bracematch">Oops: Can't find matching '{'</a></dt>
+<dd>A closing brace (which should end a comment) appears in your
+expression without a previous opening brace.</dd>
+
+<dt><a name="string">Oops: unterminated string constant</a></dt>
+<dd>A string constant (beginning with a double quote character)
+appears in your expression without a matching double quote before the
+end of the line.</dd>
+
+<dt><a name="badtok">Oops: unknown symbol</a></dt>
+<dd>GeomLab does not recognise a character as one of those that can
+appear in a valid expression.</dd>
+
+<dt><a name="eat">Oops: I expected <i>symbol</i> here</a></dt>
+<dd>At this point, the only acceptable symbol is the one indicated,
+but a different symbol occurred in the input.</dd>
+
+<dt><a name="parenmatch">Oops: Can't find matching '('</a></dt>
+<dd>A closing parenthesis in the expression you entered does not have
+a matching opening parenthesis, perhaps because your expression
+contains fewer '('s than ')'s altogether.  For complex expressions,
+the option that's enabled by the command 'Options/Match brackets' will
+help you to make sure that parentheses match correctly.</dd>
+
+<dt><a name="bramatch">Oops: Can't find matching '['</a></dt>
+<dd>A closing square bracket (ending a possible list expression) does not
+have a matching opening bracket.  A possible cause of this (if the
+opening bracket is not just missing) is that round brackets and square
+ones have become muddled, so that a ')' is needed before the ']' that
+matches the earlier '['.  Again, the option 'Options/Match brackets'
+can help you to keep things straight.
+
+<dt><a name="junk">Oops: extra text appears after the end of the
+expression</a></dt>
+<dd>The input begins with a valid expression, but there is more text
+after the end of the expression that could not be part of any longer
+expression.</dd>
+
+<dt><a name="badexp">Oops: I don't recognise this expression</a></dt>
+<dd>An expression should appear here, but the next symbol is not the
+start of any valid expression.</dd>
+
+<dt><a name="exp">Oops: I expected an expression here</a></dt>
+<dd>A further expression should appear, but the input ends at this point.</dd>
+
+<dt><a name="op">Oops: I expected an operator symbol here</a></dt>
+<dd>An operator symbol like <code>+</code> should appear here, but
+another symbol was found.</dd>
+
+<dt><a name="names">Oops: the same function name should appear in each
+equation</a></dt>
+<dd>When a function definition consists of more than one clause, the
+same function name should appear in each clause.</dd>
+
+<dt><a name="arity">Oops: each equation should have the same number of
+arguments</a></dt>
+<dd>When a function definition consists of more than one clause,
+each clause should contain the same number of argument patterns.</dd>
+
+<dt><a name="pattern">Oops: I don't recognise this pattern</a></dt>
+<dd>A pattern should appear here, but the next symbol does not begin
+any valid pattern.</dd>
+
+<dt><a name="when">Aargh: boolean needed after when</a></dt>
+<dd>If a clause in the definition of a function has a condition
+introduced by <code>when</code>, then evaluation of the condition
+must give a Boolean value, either <code>true</code> or <code>false</code>.
+In this case, the condition has yielded some other value.</dd>
+
+<dt><a name="numargs">Aargh: function <code>f</code> called with 
+<code>n</code> arguments but needs <code>m</code></a></dt>
+<dd>Each function in GeomLab takes a fixed number of arguments: for
+example, the function <code>pair</code> defined by
+<pre>
+define pair(p, q) = p $ flip(q)
+</pre>
+takes two pictures as its arguments.  It makes no sense to call a
+function with a different number of arguments: so the expressions
+<code>pair(man)</code> and <code>pair(man, woman, star)</code> have no
+value.</dd>
+
+<dt><a name="match">Aargh: function <code>f</code> undefined 
+for arguments <code>(x, y, z)</code></a></dt>
+<dd>The function <code>f</code> has been called with the arguments
+shown, but none of the clauses in the definition of <code>f</code>
+match the arguments.</dd>
+
+<dt><a name="stack">Aargh: recursion went too deep</a></dt>
+<dd>Can this ever happen?  Let us know!</dd>
+
+<dt><a name="time">Aargh: sorry, that took too long</a><br>
+Aargh: sorry, that took too much memory</dt>
+<dd>GeomLab spends no more than a certain time (by default, 10 seconds)
+and no more than a certain amount of memory space (by default, 50000 objects)
+in trying to evaluate any expression you type.
+This is necessary in order to catch expressions that would never finish 
+evaluating, and to stop the memory space of the computer from becoming so
+clogged up that GeomLab ceases to function properly.
+Since all the expressions you'll need to evaluate as you
+follow the worksheets fall well within these limits, the most likely
+thing is that the expression you've typed would never produce a value.
+Most commonly, this is because some recursive function <code>f</code> in your
+program either leads from a call of <code>f(n)</code> to another call of
+<code>f(n)</code> with the same value of <code>n</code>, or has no proper
+'base case', so that calling <code>f(0)</code> leads to calls of 
+<code>f(-1)</code>, <code>f(-2)</code>, and so on forever.</dd>
+
+<dt><a name="apply">Aargh: applying a non-function</a></dt>
+<dd>An expression <code>f(x, y, z)</code> makes sense only if <code>f</code>
+is a function.  In this case, it is some other value.  Perhaps you defined
+a name with <code>define f = ...</code> when you meant to write
+<code>define f(x) = ...</code>?</dd>
+
+<dt><a name="if">Aargh: boolean required in conditional expression</a></dt>
+<dd>In an expression <code>if <i>condition</i> then <i>expression-1</i>
+else <i>expression-2</i></code>, evaluating the condition must yield a
+Boolean value, either <code>true</code> or <code>false</code>.
+In this case, the condition has yielded some other value.</dd>
+
+<dt><a name="undef">Aargh: <code>x</code> is not defined</a></dt>
+<dd>The name <code>x</code> has been used in an expression, but it
+does not have a value.</dd>
+
+<dt><a name="redef">Aargh: can't replace built-in definition of
+x</a></dt>
+<dd>You have attempted to redefine one of the constants or functions
+that are built-in to GeomLab.  To prevent confusion, this is not
+permitted: choose a different name for you new object.</dd>
+
+<dt><a name="unknown">Aargh: primitive <code>f</code> not understood</a></dt>
+<dd>An object named <code>f</code> has been called as a primitive
+function, but GeomLab has no method for evaluating it.  This can only
+happen because of a bug in GeomLab itself, or in some plug-in module.</dd>
+
+<dt><a name="head">Aargh: taking head of the empty list / a non-list</a></dt>
+<dd>The function <code>head(xs)</code> yields a value only if <code>xs</code>
+is a non-empty list: in this case, the value is the first element of
+the list.  It has been applied in a context where <code>xs</code> is
+either the empty list <code>[]</code>, or is not a list at all.</dd>
+
+<dt><a name="tail">Aargh: taking tail of the empty list / a non-list</a></dt>
+<dd>The function <code>tail(xs)</code> yields a value only if <code>xs</code>
+is a non-empty list: in this case, the value is a list containing all
+but the first element of <code>xs</code>.  
+It has been applied in a context where <code>xs</code> is
+either the empty list <code>[]</code>, or is not a list at all.</dd>
+
+<dt><a name="type">Aargh: <code>f</code> expects a <i>kind</i>
+argument</a></dt>
+<dd>The function <code>f</code> expects an argument of some specific
+kind: a number, a picture, etc..  The argument it received was not of
+some other kind.</dd>
+
+<dt><a name="failure">Failure: <i>details</i></a></dt>
+<dd>This message appears only after an unexpected failure in the evaluation
+mechanism of GeomLab: you should never see it, and if you do, then that
+is evidence of a bug in GeomLab itself.  See if you can reproduce the
+circumstances that led to the failure, and if so, please write to us and
+give us enough information for us to reproduce the bug ourselves.</dd>
+
+<dt><a name="install">Aargh: install failure - <i>details</i></a></dt>
+<dd>An attempt to install a plug-in module into GeomLab has failed for
+the reason shown.</dd>
+
+<dt><a name="sqrt">Aargh: taking square root of a negative number</a></dt>
+<dd>The function <code>sqrt(x)</code> is defined only if
+<code>x &gt;= 0</code>, but somehow it has been invoked when 
+<code>x &lt; 0</code>.</dd>
+
+<dt><a name="divzero">Aargh: division by zero</a></dt>
+<dd>In an expression <code>x / y</code>, the value of <code>y</code> was
+zero.</dd>
+
+<dt><a name="concat">Aargh: bad arguments to operator '@'</a></dt>
+<dd>The binary operator <code>@</code> is used to concatenate two
+  lists, but the   left-hand operand is not a well-formed list.</dd>
+
+<dt><a name="not">Aargh: not expects a boolean operand</a>
+<dd>In the expression <code>not p</code>, the operand <code>p</code>
+  should be a boolean value: either <code>true</code>
+  or <code>false</code>.</dd>
+
+<dt><a name="reverse">Aargh: bad argument to function 'reverse'</a></dt>
+<dd>The function <code>reverse(xs)</code> is used to reverse a
+  list <code>xs</code>, but <code>xs</code> is not a well-formed
+  list.</dd>
+
+<dt><a name="length">Aargh: bad argument to function 'reverse'</a></dt>
+<dd>The function <code>length(xs)</code> is used to find the length
+  of a list <code>xs</code>, but <code>xs</code> is not a well-formed
+  list.</dd>
+</dl>
+</body>
+</html>

@@ -1,0 +1,588 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!--
+ * h-language.html
+ * 
+ * This file is part of GeomLab
+ * Copyright (c) 2005 J. M. Spivey
+ * All rights reserved
+ * 
+ * Redistribution and use in source and binary forms, with or without 
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright notice, 
+ *    this list of conditions and the following disclaimer.      
+ * 2. Redistributions in binary form must reproduce the above copyright notice, 
+ *    this list of conditions and the following disclaimer in the documentation 
+ *    and/or other materials provided with the distribution.
+ * 3. The name of the author may not be used to endorse or promote products 
+ *    derived from this software without specific prior written permission.
+ *    
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR 
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+ * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<html>
+<head>
+<title>The GeomLab language</title>
+<link rel="stylesheet" href="style.css">
+<meta name="section" content="using">
+</head>
+
+<body>
+
+<h1>The GeomLab language</h1>
+
+<p>This page contains a concise and fairly formal description of the
+programming language that is part of GeomLab. Reading it is almost
+certainly not the best way to learn to write programs for GeomLab:
+instead, it is better to follow the examples that are contained in the
+worksheets.</p>
+
+<p>The GeomLab language is a general-purpose programming language in
+the sense that it is not tailored towards the graphics programming
+that is the theme of the worksheets, and it is capable of describing
+any function that can be computed. Its chief feature is that it is
+purely applicative: there are no "variables" in the language that can
+be assigned different values at different times in the execution of a
+program, but like the variables of ordinary mathematics, each variable
+has a single value. As in mathematics, the same equation or definition
+can be used several times in a calculation, with the variables
+standing for different values each time it is used.</p>
+
+<h2>1.&nbsp; Syntax</h2>
+
+<p>An expression or definition consists of a sequence of tokens made
+up of ASCII characters. Each token belongs to one of these classes:
+names, numbers, strings, operators and delimiters. Blanks and
+line breaks may not occur within tokens, except in comments and for
+blanks in strings, but are otherwise ignored unless they separate two
+consecutive tokens that might otherwise be read as one. Upper and
+lower case letters are treated as distinct.</p>
+
+<p>An <i>identifier</i> is any sequence of letters, digits and
+underscores that begins with a letter or underscore, except for the
+reserved words that are listed below.</p>
+
+<p>A <i>number token</i> is any sequence of decimal digits, followed
+optionally by a decimal point and a further (possibly empty) sequence
+of decimal digits, then optionally by the letter <code>E</code>, an
+optional plus or minus sign, and a sequence of digits.</p>
+
+<p>A <i>string</i> is a sequence of characters enclosed between two
+double-quote characters. A string may not contain a double-quote
+character or a line break.</p>
+
+<p>An <i>operator</i> or <i>delimiter</i> is one of the reserved words
+and special symbols in the list that follows. Reserved words appear
+entirely in lower case, and may not be used as names.</p>
+
+<pre>and define div else if in lambda let mod not op or then when
+_ = + - $ * / &amp; ~ : @ &lt; &lt;= &lt;&gt; &gt; &gt;= ( ) [ ] , ; |</pre>
+
+<p>In most places where an identifier may appear in a GeomLab program,
+the keyword <code>op</code> may also appear, followed by an operator
+symbol; this acts as the name of the operator.</p>
+
+<pre>Name = Ident | "op" Operator</pre>
+
+<p>The syntax of expressions and definitions in the GeomLab
+language is given
+in subsequent sections of this document using EBNF notation. In this
+notation,
+square brackets <code>[ ... ]</code> enclose optional text, and curly
+brackets <code>{ ... }</code> enclose text that may be repeated zero
+or more times.
+</p>
+
+<h2>2.&nbsp; Values</h2>
+
+<p>The following kinds of value are denoted by expressions in the
+GeomLab language:</p>
+
+<h3>2.1.&nbsp; Numbers</h3>
+
+<p>Numbers in the GeomLab language are represented in
+double-precision floating point format, even if they are integers.
+Numbers are denoted by
+number tokens, and are yielded as the results of arithmetic operations.</p>
+
+<h3>2.2.&nbsp; Booleans</h3>
+
+<p>The Boolean values <code>true</code> and <code>false</code>
+are denoted by pre-defined names, and are yielded as the results of
+comparison operators.</p>
+
+<h3>2.3.&nbsp; Strings</h3>
+
+<p>Strings are denoted by string tokens. <i>Strings are
+not much used in
+GeomLab programming, and are included mostly for internal use "under
+the bonnet" in implementing the other language features.</i>
+</p>
+
+<h3>2.4.&nbsp; Lists</h3>
+
+<p>The empty list is denoted by the expression <code>[&nbsp;]</code>,
+and non-empty lists may be constructed with the operator
+"<code>:</code>". A list expression <code>[<i>x<sub>1</sub></i>,
+<i>x<sub>2</sub></i>, ..., <i>x<sub>n</sub></i>]</code>
+is an abbreviation for a list of length <i>n</i> constructed in
+this way.
+Because the GeomLab language is untyped, there is no guarantee that
+arbitrary lists are <i>proper</i>, in the sense that they
+end properly
+with the value <code>[&nbsp;]</code>.</p>
+
+<h3>2.5.&nbsp; Functions</h3>
+
+<p>Names in GeomLab programs may denote functions, either
+primitive functions that are part of the initial environment or
+installed as a plug-in extension, or functions that are defined as
+part of the GeomLab program. Each function takes a fixed number of
+values as its 
+arguments and deliviers a single value as its result. Functions are
+created by function definitions (see Section 6.2) and by <code>lambda</code>
+expressions (see Section 8.2).</p>
+
+<h3>2.6.&nbsp; Other values</h3>
+
+<p>Other kinds of value may be added to the GeomLab languages as
+plug-in
+extensions.
+Typically, such extensions come with a collection of primitive
+functions
+for creating and manipulating the new values.
+In the GeomLab environment, colours and pictures are provided as
+additional kinds of value in this way.</p>
+
+<h2>3. Scope rules</h2>
+
+<p>Expressions are evaluated in the context of an environment that
+gives values to the variables that appear in the expression. An
+environment has two parts: the global part contains the pre-defined
+names that are built in to the GeomLab system, together with
+additional names that have been added by top-level definitions. There
+is also a local part of the environment that contains names that have
+been defined by pattern-matching in a function definition, or by one
+of the additional forms of expression covered in
+Section&nbsp;8. Unless these additional forms of expression are used, 
+there is no nesting of environments in GeomLab, and the scope rules
+can be summarised as follows:</p>
+
+<ul>
+  <li>The local part of the environment takes precedence over the
+  global part.  Thus, if the same name is used for a global variable and
+  for one of the formal parameters of a function, then it is the formal
+  parameter that is denoted by the name within the function body.</li>
+
+  <li>If a function is defined, and then later applied after further
+  definitions have been added to the global environment, then it is the
+  global environment at the time the function is applied that is used
+  for evaluating the function body -- a form of dynamic binding. This
+  rule is a natural one for interactive programming, and allows
+  naturally for mutual recursion among top-level functions.</li>
+</ul>
+
+<p>The additional forms of expression introduced in Section&nbsp;8
+allow the possiblility of nested scopes in which function values are
+first-class citizens. For these forms of expression, it is necessary
+to add the rule that the local part of the environment is treated
+according to static binding.  Thus, function values capture the local
+part of the environment at the point of definition, and it is this
+local part, and not the one in force at the point of application, that
+is used to evaluate the function body.  Recursion is allowed in local
+function definitions but not in local value definitions.</p>
+
+<h2>4. Expressions</h2>
+
+<pre>Primary    = Name | Number | String
+           | Name { "(" [ Expression { "," Expression } ] ")" }
+           | "(" Expression ")" 
+           | "[" [ Expression { "," Expression } ] "]"
+ 
+Factor     = ( "-" | "~" ) Factor | Primary 
+ 
+Term0      = { Factor ":" } Factor
+Term1      = Term0 { ( "*" | "/" | "$" ) Term0
+Term2      = Term1 { ( "+" | "-" | "&amp;" ) Term1 }
+Term3      = { Term2 "@" } Term2
+Term4      = Term3 { ( "=" | "&lt;" | "&lt;=" | "&lt;&gt;" | "&gt;" | "&gt;=" ) Term3 }
+Term5      = Term4 { and Term4 }
+Term       = Term5 { or Term5 }
+
+BasicExpr  = Term | if Term then BasicExpr else BasicExpr
+
+Expression = BasicExpr | LetExpr | LambdaExpr</pre>
+
+<h3>4.1.&nbsp; Primary expressions</h3>
+
+<p>The smallest expressions are names, which denote the value to which
+they are bound in the environment; number tokens, which denote a
+numeric constant; and string tokens, which denote a constant string.
+Any expression may appear in parentheses as an operand in a larger
+expression.</p>
+
+<p>An expression 
+<code>[<i>e</i><sub>1</sub>, <i>e</i><sub>2</sub>, 
+..., <i>e<sub>n</sub></i>]</code> 
+denotes a list made up of
+the <code>n</code> values that are denoted by the expressions 
+<code>e1</code>, <code>e2</code>,
+...&nbsp;<code>en</code>.</p>  This list is constructed using the empty list
+(denoted <code>[ ]</code>) by <code>n</code> applications of the construction
+operator&nbsp;"<code>:</code>".
+
+<h3>4.3.&nbsp; Function application</h3>
+
+<p>An expression <code><i>f</i>(<i>e</i><sub>1</sub>,
+<i>e</i><sub>2</sub>, ..., <i>e<sub>n</sub></i>)</code>
+denotes the application of a
+function <code><i>f</i></code> to the <code><i>n</i></code>
+arguments <code><i>e</i><sub>1</sub></code>,
+..., <code><i>e<sub>n</sub></i></code>.
+The number of arguments must match the number expected
+by <code><i>f</i></code>. The arguments and
+the function <i><u>f</u></i> are first
+evaluated.
+If <code><i>f</i></code> is a function that
+has been defined
+as part of the GeomLab program, then the argument values are matched
+with
+the patterns that appear in the definition of <code><i>f</i></code>,
+and the value
+of the application is that value of the appropriate function body.
+Other functions are implemented as primitives in the initial
+environment of the GeomLab program, and deliver a result that
+cannot be expressed as the value of another expression.</p>
+
+<h3>4.4.&nbsp; Unary and binary operators</h3>
+
+<p>Simple expressions may be combined with various unary and binary
+operators to form more complex expressions; these operators have the
+binding powers that are implied by the syntax rules above. All binary
+operators associate to the left, except for "<code>:</code>" and
+<code>@</code>, which associate to the right.  An expression written
+with a prefix or infix operator is just an abbreviation for the
+application of the same operator as a function. Thus, the expression
+<code><i>x&nbsp;</i>+&nbsp;<i>y</i></code> is an abbreviation for the
+binary function application <code>(op +)(<i>x</i>, <i>y</i>)</code>;
+this expression uses the name <code>op +</code> that is bound to the
+addition primitive.  All the operators of
+GeomLab are bound to different primitive functions in the initial
+environment.</p>
+
+<p>An exception to this rule is made in the case of the operators
+<code>and</code> and <code>or</code>, which are evaluated in a
+'short-circuit' fashion: thus, in the expression <code><i>e</i><sub>1</sub>
+and <i>e</i><sub>2</sub></code>, the
+sub-expression <code><i>e</i><sub>1</sub></code>
+must yield a Boolean value. If this value is <code>true</code>,
+then the
+value of the expression is whatever value is yielded by evaluating
+<code><i>e</i><sub>2</sub></code>; otherwise the value of the 
+expression is <code>false</code>.
+Similarly, the value of <code><i>e</i><sub>1</sub>
+or <i>e</i><sub>2</sub></code> is the
+value of <code><i>e</i><sub>2</sub></code>
+if <code><i>e</i><sub>1</sub></code>
+yields <code>false</code>, and otherwise it is <code>true</code>.
+This means that <code><i>e</i><sub>1</sub>
+and <i>e</i><sub>2</sub></code> is
+equivalent to the
+conditional expression</p>
+
+<blockquote><code>if <i>e</i><sub>1</sub> then <i>e</i><sub>2</sub>
+else false</code></blockquote>
+
+<p>
+and <code><i>e</i><sub>1</sub> or <i>e</i><sub>2</sub></code>
+is equivalent to</p>
+
+<blockquote><code>if <i>e</i><sub>1</sub> then true else
+<i>e</i><sub>2</sub></code></blockquote>
+
+<h3>4.5.&nbsp; Conditional expressions</h3>
+
+<p>
+An expression <code>if <i>e</i><sub>1</sub>
+then <i>e</i><sub>2</sub> else <i>e</i><sub>3</sub></code>
+is
+evaluated by first finding the value of <code><i>e</i><sub>1</sub></code>.
+This should
+be a Boolean value, either <code>true</code> or <code>false</code>;
+an
+error is reported if it is not. Then either <code><i>e</i><sub>2</sub></code>
+or <code><i>e</i><sub>3</sub></code>
+is chosen for evaluation, depending on the Boolean value, and the value
+of the chosen expression becomes the value of the whole
+conditional expression. The other sub-expression is not evaluated.</p>
+
+<h3>4.6.&nbsp; Other forms of expression</h3>
+
+<p>
+Two additional forms of expression -- <u>let</u>
+expressions and <u> lambda</u> expressions -- are allowed.
+They are described on Section&nbsp;8.</p>
+
+<h2>5. Patterns</h2>
+
+<p>Patterns are used in function definitions (see Section&nbsp;6) and
+<code>lambda</code> 
+expressions (see Section&nbsp;8) to match the arguments
+of a function. An attempt to match a pattern against a value may either
+succeed or fail; if it succeeds, then the names that appear in the
+expression
+become bound to parts of the original value. A name may appear more
+than once
+in a pattern or list of patterns; in that case, matching fails unless
+the values that it matches are all equal. The equality test that is
+applied is the same as the one used
+for the <code>=</code> operator.</p>
+
+<pre>PattPrimary = Name | "_" 
+            | [ "-" | "~" ] Number 
+            | String
+            | "(" Pattern ")" 
+            | "[" [ Pattern { "," Pattern } ] "]"
+
+PattFactor  = PattPrimary { ":" PattPrimary }
+
+Pattern     = PattFactor { "+" Number }</pre>
+
+<h3>5.1.&nbsp; Primary patterns</h3>
+
+<p>The simplest patterns are names, which match any value and bind the
+name to it; the anonymous pattern <code>_</code> which matches any
+value but does not bind a name; positive and negative numbers and
+strings, which match the single, constant values denoted by the number
+or string.  Any pattern may also be enclosed in parentheses and used
+as a primary part of a larger pattern.</p>
+
+<p>A list pattern
+<code>[<i>p</i><sub>1</sub>, <i>p</i><sub>2</sub>, 
+..., <i>p<sub>n</sub></i>]</code> 
+matches any list of length <code>n</code> whose elements are matched by the
+patterns <code><i>p</i><sub>1</sub></code>, 
+<code><i>p</i><sub>2</sub></code>, 
+...&nbsp;<code><i>p<sub>n</sub></i></code> respectively.</p>
+
+<h3>5.2.&nbsp; Cons patterns</h3>
+
+<p>A "cons" pattern
+<code><i>p</i><sub>1</sub>:<i>p</i><sub>2</sub></code> matches any
+non-empty list whose head is 
+matched by <code><i>p</i><sub>1</sub></code> and whose tail is matched
+by <code><i>p</i><sub>2</sub></code>.</p>
+
+<h3>5.3.&nbsp; Plus patterns</h3>
+
+<p>A "plus" pattern has the form <code><i>p</i>+<i>n</i></code>,
+where <code><i>n</i></code> is a number. It matches a number
+<code><i>x</i></code> if <code><i>n</i> &gt; 0</code>
+and the difference <code><i>y</i> = <i> x</i> - <i> n</i></code> 
+is an integer such that <code><i>y</i> &gt;= 0</code> 
+and the pattern <code><i>p</i></code> 
+matches&nbsp;<code><i>y</i></code>.</p>
+
+<h2>6. Definitions</h2>
+
+<pre>Definition = ValueDef | FuncDef</pre>
+
+<p>Definitions appear in <code>define</code> paragraphs to
+add a definition to the
+global environment, and also in <code>let</code>
+expressions to define a name locally to an expression.</p>
+
+<h3>6.1.&nbsp; Value definitions</h3>
+
+<pre>ValueDef = Name "=" Expression</pre>
+
+<p>A value definition defines a name as standing for the value of a
+certain expression. The expression is evaluated immediately, and the
+name becomes bound to its value.</p>
+
+<h3>6.2.&nbsp; Function definitions</h3>
+
+<pre>FuncDef = Clause { "|" Clause }
+
+Clause  = Name Formals "=" Expression [ when Expression ]
+
+Formals = "(" [ Pattern { "," Pattern } ] ")"</pre>
+
+<p>A function definition defines a name as standing for a function.
+The function is defined by a sequence of clauses, each containing a
+list of patterns that are matched against the arguments of the
+function, and expression that gives the corresponding value yielded by
+the function, and optionally a boolean-valued <i>guard</i> expression
+after <code>when</code> that
+specifies a condition under which the clause applies.
+For a function definition to be syntactically valid, all the
+clauses must contain the same function name, and all must contain the
+same number of argument patterns, the number of arguments that is
+expected by the function.</p>
+
+<p>When the function is applied to arguments, the clauses in the
+definition are considered in order, and the first applicable one
+determines the value that is yielded by the application.  To apply a
+clause, the patterns in the clause are first matched with the incoming
+arguments.  If they all match, then the guard (if any) is evaluated;
+if the value of the guard is <code>false</code>, then the clause does
+not apply.  Finally, the right-hand side expression is evaluated, and
+its value becomes the value yielded by the function application.
+If any guard that is evaluated fails to return a Boolean result, or
+if no clause is applicable to the arguments, then the evaluation
+fails.</p>
+
+<p>The definition of a function may have several clauses, each
+one matching a different pattern of arguments. For example,
+here is the definition of a function <code>pow(a, b)</code> that
+computes <code>a</code> raised to the power <code>b</code>:</p>
+
+<pre>define pow(a, b) = a * pow(a, b-1) when b &gt; 0
+ | pow(a, 0) = 1</pre>
+
+<p>The first clause deals with the case where <code>b &gt; 0</code>, defining
+<code>pow(a, b)</code> in terms of <code>pow(a, b-1)</code>; the
+second clause deals with 
+the case where <code>b = 0</code>, giving the result directly,
+and providing a place for the recursion to stop. (The function is not
+defined at all if <code>b &lt; 0</code>.)</p>
+
+<p>The first clause in this definition has patterns (<code>a</code>
+and <code>b</code>) that will match any arguments that are
+supplied, but the guard <code>b &gt; 0</code> rules out those where
+<code>b &lt;= 0</code>. The second clause matches those argument lists
+where the second argument is equal to 0.</p>
+
+<h2>7. Paragraphs</h2>
+
+<pre>Paragraph = Expression [ ";" ] 
+          | define Definition [ ";" ]</pre>
+
+<p>A program in the GeomLab language consists of a sequence of
+<i>paragraphs</i> that are entered at the top-level prompt or read
+from one or more text files.
+Each paragraph is either an expression to be evaluated in the current
+global environment, or a definition that adds to that environment.</p>
+
+<p>When paragraphs are written on a file for use with the
+File/Load command of GeomLab, each paragraph must end with a semicolon.
+The semicolon can be
+omitted when paragraphs are entered at the interactive prompt.</p>
+
+<h2>8. Additional forms of expression</h2>
+
+<p>There are two additional forms of expression -- <code>let</code>
+expressions and <code>lambda</code> expressions --
+that are not needed for the
+worksheets, but are useful in more advanced programming. These
+forms of expression do not add to the expressive power of the language,
+but they do make some kinds of program easier to write.</p>
+
+<h3>8.1.&nbsp; <code>let</code> expressions</h3>
+
+<pre>LetExpr = let Definition in Expression</pre>
+
+<p>An expression <code>let <i>d</i> in <i>e</i></code>
+allows the name defined
+by the definition <code><i>d</i></code> to be
+used in the expression <code><i>e</i></code>.
+For example, the value of the expression</p>
+
+<pre>let y = x + 1 in y * y</pre>
+
+<p>is the square of whatever is the value of <code>x + 1</code>.
+The advantages
+of using a <code>let</code> expression is that it is often
+clearer to do so, and
+sometimes shorter and more efficient than writing out the expression
+and substituting the right-hand side of the definition for the
+left-hand side,
+like this:</p>
+
+<pre>(x + 1) * (x + 1)</pre>
+
+<p>Also, <code>let</code> expressions can be used to define
+functions that are local to a single expression.</p>
+
+<h3>8.2.&nbsp; <code>lambda</code> expressions</h3>
+
+<pre>LambdaExpr = lambda Formals Expression</pre>
+
+<p>A <code>lambda</code> expression denotes a function that is defined
+by a single clause with no guard.  A <code>lambda</code>
+expression</p>
+
+<blockquote><code>lambda (<i>p</i><sub>1</sub>, <i>p</i><sub>2</sub>, ..., <i>p<sub>n</sub></i>) e</code></blockquote>
+
+<p>denotes the same function <code>f</code> as is defined by the
+definition</p>
+
+<blockquote><code>(<i>p</i><sub>1</sub>, <i>p</i><sub>2</sub>, ..., <i>p<sub>n</sub></i>) = e</code></blockquote>
+
+<p>There is no need, however, to invent a fresh name <code>f</code> in
+order to write the function as a <code>lambda</code> expression.
+<code>Lambda</code> expressions are mainly used in more advanced
+programming to specify arguments to higher-order functions.</p>
+
+<h2>9.&nbsp; Syntax summary</h2>
+
+<pre>
+Paragraph   = Expression [ ";" ] 
+            | define Definition [ ";" ]
+
+Definition  = ValueDef | FuncDef
+
+ValueDef    = Name "=" Expression
+
+FuncDef     = Clause { "|" Clause }
+
+Clause      = Name Formals "=" Expression [ when Expression ]
+
+Expression  = Term 
+            | if Term then BasicExpr else BasicExpr
+            | let Definition in Expression
+            | lambda Formals Expression
+
+Term        = Term5 { or Term5 }
+Term5       = Term4 { and Term4 }
+Term4       = Term3 { ( "=" | "&lt;" | "&lt;=" | "&lt;&gt;" | "&gt;" | "&gt;=" ) Term3 }
+Term3       = { Term2 "@" } Term2
+Term2       = Term1 { ( "+" | "-" | "&amp;" ) Term1 }
+Term1       = Term0 { ( "*" | "/" | "$" ) Term0
+Term0       = { Factor ":" } Factor
+
+Factor      = ( "-" | "~" ) Factor | Primary
+ 
+Primary     = Name | Number | String
+	    | Name { "(" [ Expression { "," Expression } ] ")" }
+            | "(" Expression ")" 
+            | "[" [ Expression { "," Expression } ] "]"
+ 
+Formals     = "(" [ Pattern { "," Pattern } ] ")"
+
+Pattern     = PattFactor { "+" Number }
+
+PattFactor  = PattPrimary { ":" PattPrimary }
+
+PattPrimary = Name | "_" 
+            | [ "-" | "~" ] Number 
+            | String
+            | "(" Pattern ")" 
+            | "[" [ Pattern { "," Pattern } ] "]"
+
+Name        = Ident | "op" Operator
+
+Operator    = and | div | mod | not | or | "=" | "+" | "-" 
+            | "$" | "*" | "/" | "&amp;" | "~" | ":" | "@" 
+            | "&lt;" | "&lt;=" | "&lt;&gt;" | "&gt;" | "&gt;=" 
+</pre>
+</body>
+</html>
