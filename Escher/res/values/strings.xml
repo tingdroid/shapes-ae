@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Escher</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="consoleText">Enter \"help\" for help.\n\
+testing\n\
+This is a deliberately long line of text that should be wrapped.\n\
+two\n\
+three\n\</string>
+    <string name="title_activity_graph_box">Graph Box</string>
+
+</resources>
