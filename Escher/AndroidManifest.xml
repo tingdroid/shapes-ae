@@ -9,10 +9,11 @@
         android:targetSdkVersion="17" />
 
     <application
+        android:name="geomlab.Session"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name="com.ting.escher.Console"
             android:label="@string/app_name" >

@@ -50,6 +50,9 @@ import java.lang.reflect.Field;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import android.app.Application;
+import android.content.Context;
+
 /**
  * This class provides static methods for serializing the GeomLab session state
  * into a file, and reloading a saved session state. The saved state consists of
@@ -59,8 +62,8 @@ import java.util.Set;
  * Other bits of global state that are not saved: the time and space limits in
  * Evaluator, the palette of colours in Picture.
  */
-public class Session {
 
+public class Session extends Application {
 	/** Signature for saved sessions (spells "GEOM") */
 	private static final int SIG = 0x47454f4d;
 
@@ -70,6 +73,18 @@ public class Session {
 	/** Table of loaded plugins */
 	private static Set<String> plugins = new LinkedHashSet<String>(10);
 
+	private static Session session = null;
+
+	@Override
+	public void onCreate() {
+		super.onCreate();
+		session = this;
+	}
+
+	public static Context context() {
+		return session.getApplicationContext();
+	}
+	
 	public static void installPlugin(Class<?> plugin) throws CommandException {
 		if (plugins.contains(plugin.getName()))
 			return;
@@ -98,10 +113,8 @@ public class Session {
 	}
 
 	/** Load from a resource in the classpath (e.g. the prelude file) */
-	protected static void loadResource(String name) throws CommandException {
-		ClassLoader loader = Session.class.getClassLoader();
-		InputStream stream = loader.getResourceAsStream(name);
-
+	protected static void loadResource(String name) throws CommandException, IOException {
+		InputStream stream = session.getResources().getAssets().open(name);
 		if (stream == null)
 			throw new CommandException("Can't read resource " + name,
 					"#noresource");
@@ -177,4 +190,5 @@ public class Session {
 					"#nowrite");
 		}
 	}
+
 }
