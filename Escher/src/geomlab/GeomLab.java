@@ -30,15 +30,13 @@
 
 package geomlab;
 
-import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.StringReader;
 
-import javax.swing.JFrame;
-
 import plugins.Drawable;
+import android.net.wifi.p2p.WifiP2pManager.ActionListener;
+
+import com.ting.escher.Console;
 
 import funbase.Name;
 import funbase.Value;
@@ -59,16 +57,13 @@ import geomlab.Command.CommandException;
  * details of how pictures are made up.
  */
 public class GeomLab extends GeomBase {
-	private static final String svnid = "$Id: GeomLab.java 365 2008-06-11 17:11:29Z mike $";
 
-	// public final AppFrame frame = new AppFrame();
-	// public final GraphBox arena = new GraphBox("Picture", frame);
+	public final Console frame; // = new AppFrame();
+	public final GraphBox arena; // = new GraphBox("Picture", frame);
 	// public final PhoneHome phoneHome = new PhoneHome();
 
-	public boolean antialiased = false;
-
 	public GeomLab() {
-		setLog(frame.getLogWriter());
+		setLog(frame.getPrintWriter());
 
 		frame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
