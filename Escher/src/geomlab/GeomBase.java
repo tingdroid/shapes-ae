@@ -39,6 +39,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Reader;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import android.app.Application;
+import android.content.Context;
 
 import funbase.Evaluator;
 import funbase.Name;
@@ -46,9 +51,10 @@ import funbase.Parser;
 import funbase.Primitive;
 import funbase.Scanner;
 import funbase.Value;
+import geomlab.Command.CommandException;
 
 /** Common superclass for classes that provide a read-eval-print loop */
-public class GeomBase {
+public class GeomBase extends Application {
 
 	protected boolean statsFlag = false;
 	protected Value last_val = null;
@@ -57,6 +63,16 @@ public class GeomBase {
 	protected PrintWriter log;
 	private File currentFile = null;
 
+	@Override
+	public void onCreate() {
+		super.onCreate();
+		registerApp(this);
+	}
+
+	public static Context context() {
+		return theApp.getApplicationContext();
+	}	
+	
 	public void setLog(PrintWriter log) {
 		this.log = log;
 	}
@@ -128,6 +144,22 @@ public class GeomBase {
 		}
 	}
 
+	/** Global method of accessing resource streams */
+	public static InputStream getResourceAsStream(String name) throws IOException, CommandException {
+		InputStream stream = theApp.getResources().getAssets().open(name);
+		if (stream == null)
+			throw new CommandException("Can't read resource " + name,
+					"#noresource");
+		
+		return stream;
+	}
+
+	/** Global method of accessing resource URLs */
+	public static URL getResource(String name) throws MalformedURLException {
+		URL url = new URL("file:///android_asset/" + name);
+		return url;
+	}
+
 	/** Load from a file */
 	protected void loadFromFile(File file, boolean display) {
 		File save_currentFile = currentFile;
@@ -154,24 +186,6 @@ public class GeomBase {
 
 	public File getCurrentFile() {
 		return currentFile;
-	}
-
-	/** Load from a resource in the classpath (e.g. the prelude file) */
-	protected void loadResource(String name) {
-		ClassLoader loader = this.getClass().getClassLoader();
-		InputStream stream = loader.getResourceAsStream(name);
-
-		if (stream == null) {
-			errorMessage("Can't read resource " + name, "#noresource");
-			return;
-		}
-
-		Reader reader = new BufferedReader(new InputStreamReader(stream));
-		eval_loop(reader, false, null);
-		try {
-			reader.close();
-		} catch (IOException e) {
-		}
 	}
 
 	public void exit() {

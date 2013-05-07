@@ -23,8 +23,7 @@ public class Image {
 	}
 
 	public static Image fromResource(String name) throws IOException {
-		ClassLoader loader = ImagePicture.class.getClassLoader();
-		return fromUrl(loader.getResource(name));
+		return fromUrl(GeomBase.getResource(name));
 	}
 
 	public static Image fromUrl(URL url) throws IOException {
