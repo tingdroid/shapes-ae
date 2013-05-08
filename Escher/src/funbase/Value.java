@@ -43,6 +43,7 @@ import funbase.Evaluator.Result;
 
 /** Abstract superclass of all values in GeomLab */
 public abstract class Value implements Serializable {
+	private static final long serialVersionUID = 1L;
     
     /* The actual classes used to represent values are those contained
      * in this file, together with the classes Closure and Primitive -- plus
