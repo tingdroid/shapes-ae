@@ -37,6 +37,7 @@ import funbase.Evaluator.EvalException;
 import funbase.Evaluator.Result;
 import funbase.Primitive;
 import funbase.Value;
+import geomlab.Command.CommandException;
 import geomlab.Image;
 
 import java.io.IOException;
@@ -86,7 +87,7 @@ public class ImagePicture extends Picture {
     }
     
     private void readObject(ObjectInputStream stream) 
-    		throws IOException, ClassNotFoundException {
+    		throws IOException, ClassNotFoundException, CommandException {
 	stream.defaultReadObject();
 	
 	if (resourceName != null) {
@@ -150,7 +151,7 @@ public class ImagePicture extends Picture {
 	try {
 	    return new ImagePicture(Image.fromResource(name), name);
 	}
-	catch (IOException e) {
+	catch (Exception e) {
 	    return Value.nil;
 	}
     }
@@ -167,8 +168,8 @@ public class ImagePicture extends Picture {
 			cxt.primFail("Error loading photo: " + name);
 		    return new ImagePicture(image);
 		}
-		catch (IOException e) {
-		    cxt.primFail("Image I/O error - " + e);
+		catch (Exception e) {
+		    cxt.primFail("Image error - " + e);
 		    return null;
 		}
 	    }
@@ -184,8 +185,10 @@ public class ImagePicture extends Picture {
 		}
 		catch (IOException e) {
 		    cxt.primFail("Image I/O error - " + e);
-		    return Value.nil;
+		} catch (CommandException e) {
+		    cxt.primFail("Image Command error - " + e);
 		}
+	    return Value.nil;
 	    }
 	},
 	

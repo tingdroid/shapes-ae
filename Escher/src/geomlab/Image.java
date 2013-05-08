@@ -1,5 +1,7 @@
 package geomlab;
 
+import geomlab.Command.CommandException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -22,8 +24,8 @@ public class Image {
 		bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
 	}
 
-	public static Image fromResource(String name) throws IOException {
-		return fromUrl(GeomBase.getResource(name));
+	public static Image fromResource(String name) throws IOException, CommandException {
+		return fromStream(GeomBase.getResourceAsStream(name));
 	}
 
 	public static Image fromUrl(URL url) throws IOException {
@@ -41,6 +43,13 @@ public class Image {
 		} finally {
 			if (input != null) input.close();
 		}
+	}
+
+	public static Image fromStream(InputStream input) throws IOException {
+		if (input == null)
+			return null;
+		Bitmap myBitmap = BitmapFactory.decodeStream(input);
+		return new Image(myBitmap);
 	}
 
 	public int getWidth() {

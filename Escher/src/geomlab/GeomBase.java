@@ -154,12 +154,6 @@ public class GeomBase extends Application {
 		return stream;
 	}
 
-	/** Global method of accessing resource URLs */
-	public static URL getResource(String name) throws MalformedURLException {
-		URL url = new URL("file:///android_asset/" + name);
-		return url;
-	}
-
 	/** Load from a file */
 	protected void loadFromFile(File file, boolean display) {
 		File save_currentFile = currentFile;
