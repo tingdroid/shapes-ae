@@ -42,6 +42,7 @@ import funbase.Evaluator.Result;
  *  function.  It is these subclasses that override the apply method
  *  so that their instances can actually be applied to arguments. */
 public abstract class Function extends Value {
+	private static final long serialVersionUID = 1L;
 
     /** Name of the function: this is "<lambda>" for lambda expressions */
     protected final String name;

@@ -85,4 +85,9 @@ public class GraphBox extends Activity {
 		ImageIO.write(image, "png", file);
 */	}
 
+	public void setPicture(Drawable val) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

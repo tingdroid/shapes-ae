@@ -1,6 +1,9 @@
 package com.ting.escher;
 
+import geomlab.GeomLab;
+
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
 
@@ -16,6 +19,7 @@ import android.widget.TextView.OnEditorActionListener;
 public class Console extends Activity {
 
 	ActionEditText mConsoleText = null;
+	EvalListener evalListener = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +32,12 @@ public class Console extends Activity {
 		mConsoleText.setHorizontallyScrolling(true);
 
 		mConsoleText.setOnEditorActionListener(mEditorActionListener);
+		
+		try {
+			GeomLab.withFrame(this);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -35,6 +45,10 @@ public class Console extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.console, menu);
 		return true;
+	}
+	
+	public void setEvalListener(EvalListener evalListener) {
+		this.evalListener = evalListener;
 	}
 
 	private TextView.OnEditorActionListener mEditorActionListener = new OnEditorActionListener() {
@@ -76,9 +90,15 @@ public class Console extends Activity {
 	}
 
 	private void evalEntry(Entry entry) {
-		String input = entry.getText().toString();
-		String result = "[" + input.trim() + "]";
-		entry.appendClear(result + "\n" + "   ");
+		String input = entry.getText().toString().trim();
+		entry.appendClear("");
+		String result = "";
+		if (input.length() > 0 && evalListener != null) {
+			result = evalListener.evalPerformed(input);
+		}
+		if (result != null)
+			entry.append(result + "\n");
+		entry.append("   ");
 	}
 
 	public PrintWriter getPrintWriter() {

@@ -31,12 +31,13 @@
 package geomlab;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.StringReader;
 
 import plugins.Drawable;
-import android.net.wifi.p2p.WifiP2pManager.ActionListener;
 
 import com.ting.escher.Console;
+import com.ting.escher.EvalListener;
 
 import funbase.Name;
 import funbase.Value;
@@ -58,24 +59,16 @@ import geomlab.Command.CommandException;
  */
 public class GeomLab extends GeomBase {
 
-	public final Console frame; // = new AppFrame();
-	public final GraphBox arena; // = new GraphBox("Picture", frame);
+	public Console frame; // = new AppFrame();
+	public GraphBox arena; // = new GraphBox("Picture", frame);
 	// public final PhoneHome phoneHome = new PhoneHome();
 
 	public GeomLab() {
-		setLog(frame.getPrintWriter());
-
-		frame.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				evaluate();
-			}
-		});
 	}
-
+	
 	protected void prompt() {
 		log.print("> ");
 		log.flush();
-		frame.setFocus();
 	}
 
 	/** Print an error or information message into the log */
@@ -83,42 +76,16 @@ public class GeomLab extends GeomBase {
 		log.print("\n[" + msg + "]\n");
 	}
 
-	/** Insert "> " after each newline in a command string */
-	private String fix(String cmd) {
-		StringBuilder res = new StringBuilder();
-		int i = 0;
-		for (;;) {
-			int j = cmd.indexOf("\n", i);
-			if (j < 0)
-				break;
-			res.append(cmd.substring(i, j + 1));
-			res.append("> ");
-			i = j + 1;
-		}
-		res.append(cmd.substring(i));
-		return res.toString();
-	}
-
 	/** Update the picture display */
 	protected void displayUpdate(Value val) {
+		if (arena == null) {
+			// TODO create arena
+			return;
+		}
 		if (val == null || !(val instanceof Drawable))
 			arena.setPicture(null);
 		else {
 			arena.setPicture((Drawable) val);
-			if (!arena.isVisible())
-				arena.setVisible(true);
-			if (arena.getExtendedState() == JFrame.ICONIFIED)
-				arena.setExtendedState(JFrame.NORMAL);
-
-			// Keep main window active -- no idea whether invokeLater helps
-			// here or not.
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					frame.setVisible(true);
-					frame.toFront();
-					frame.input.requestFocus();
-				}
-			});
 		}
 	}
 
@@ -129,32 +96,15 @@ public class GeomLab extends GeomBase {
 	}
 
 	/** Command -- evaluate expressions */
-	public void evaluate() {
-		/*
-		 * This runs the commands in another thread to allow display updates
-		 * during evaluation
-		 */
-
-		String command = frame.input.getText();
-
-		frame.setEnabled(false);
-		log.println(fix(command));
-		log.flush();
-
+	public String evaluate(String command) {
 		final StringReader reader = new StringReader(command);
 
-		Thread evalThread = new Thread() {
-			public void run() {
-				boolean done = eval_loop(reader, true, frame);
-				displayUpdate(last_val);
-				prompt();
-				if (done)
-					frame.input.setText("");
-				frame.setEnabled(true);
-			}
-		};
-
-		evalThread.start();
+		boolean done = eval_loop(reader, true, frame);
+		displayUpdate(last_val);
+		if (last_val != null && !(last_val instanceof Drawable)) {
+			return last_val.toString(); 
+		}
+		return null;
 	}
 
 	/** Command -- paste a list of global names into the log */
@@ -186,31 +136,19 @@ public class GeomLab extends GeomBase {
 		prompt();
 	}
 
-	/** Command -- paste the defining text for a name into the input area */
-	public void findDefinition() {
-		String x = frame.input.getText();
-		if (x.equals(""))
-			return;
+	public static void withFrame(Console frame) throws IOException {
+		final GeomLab app = (GeomLab)theApp;
+		app.frame = frame;
+		app.setLog(frame.getPrintWriter());
 
-		Name name = Name.find(x);
-		String def = name.getDeftext();
-		if (def == null) {
-			frame.input.setText("\"No definition found\"");
-			return;
-		}
-
-		frame.input.setText(def);
-	}
-
-	public static void main(String args[]) {
-		GeomLab app = new GeomLab();
-		GeomBase.registerApp(app);
-		// app.phoneHome.request();
-
-		app.frame.setJMenuBar(Command.makeAppMenuBar(app));
-		app.frame.setVisible(true);
+		frame.setEvalListener(new EvalListener() {
+			public String evalPerformed(String input) {
+				return app.evaluate(input);
+			}
+		});
 
 		app.log.println("Welcome to GeomLab");
+		app.log.flush();
 
 		try {
 			Session.loadResource("geomlab.gls");
@@ -218,9 +156,9 @@ public class GeomLab extends GeomBase {
 			app.errorMessage(e.getMessage(), e.getErrtag());
 		}
 
-		for (String f : args)
-			app.loadFromFile(new File(f), false);
-		app.log.println();
-		app.prompt();
+		//for (String f : args)
+		//	app.loadFromFile(new File(f), false);
+		//app.log.println();
+		//app.prompt();
 	}
 }
