@@ -39,8 +39,6 @@ import funbase.Value;
 
 /** A primitive that prints its argument on the log stream. */
 public class Print {
-    private static final String svnid =
-	"$Id: Print.java 356 2008-05-28 13:53:15Z mike $";
     
     public static Primitive primitives[] = {
 	new Primitive("print", 1) {

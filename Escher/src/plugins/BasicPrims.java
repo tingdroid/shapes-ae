@@ -35,8 +35,6 @@ import funbase.Value;
 
 /** Basic primitives for handling numbers, booleans and lists */
 public class BasicPrims {
-    private static final String svnid =
-	"$Id: BasicPrims.java 356 2008-05-28 13:53:15Z mike $";
 
     public static final Primitive primitives[] = {
 	new Primitive("=", 2) {

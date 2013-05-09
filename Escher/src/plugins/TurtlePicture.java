@@ -39,8 +39,6 @@ import funbase.Value;
 
 /** A picture drawn with a sequence of left, ahead, right commands. */
 public class TurtlePicture extends Picture {
-    private static final String svnid =
-	"$Id: TurtlePicture.java 365 2008-06-11 17:11:29Z mike $";
     private static final long serialVersionUID = 1L;
     
     public final Command commands[];

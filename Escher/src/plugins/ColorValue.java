@@ -39,8 +39,6 @@ import funbase.Value;
 
 /** A colour wrapped as a value */
 public class ColorValue extends Value {
-    private static final String svnid =
-	"$Id: ColorValue.java 365 2008-06-11 17:11:29Z mike $";
     private static final long serialVersionUID = 1L;
 
     /* The most computationally intensive use of colours is in

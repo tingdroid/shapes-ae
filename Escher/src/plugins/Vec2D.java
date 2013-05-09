@@ -34,8 +34,6 @@ import java.io.Serializable;
 
 /** Floating point vectors in 2D */
 public class Vec2D implements Serializable {
-    private static final String svnid =
-	"$Id: Vec2D.java 365 2008-06-11 17:11:29Z mike $";
     
     public final float x, y;
     

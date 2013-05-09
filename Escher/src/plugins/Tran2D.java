@@ -35,8 +35,6 @@ package plugins;
  *  [x'] = [m_xx  m_xy] [x] + [m_x]
  *  [y']   [m_yx  m_yy] [y]   [m_y] */
 public class Tran2D implements java.io.Serializable {
-    private static final String svnid =
-	"$Id: Tran2D.java 372 2008-10-06 22:49:30Z mike $";
     private static final long serialVersionUID = 1L;
     
     /* There's a library class for transformations, but it contains lots

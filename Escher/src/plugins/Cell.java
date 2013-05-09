@@ -39,8 +39,6 @@ import funbase.Value;
 
 /** Assignable cells */
 public class Cell extends Value {
-    private static final String svnid =
-	"$Id: Cell.java 356 2008-05-28 13:53:15Z mike $";
     private static final long serialVersionUID = 1L;
     
     protected Value contents;

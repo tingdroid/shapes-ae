@@ -38,8 +38,6 @@ import funbase.Value;
 
 /** Fractal plants */
 public class BushPicture extends Picture {
-    private static final String svnid =
-	"$Id: BushPicture.java 365 2008-06-11 17:11:29Z mike $";
     private static final long serialVersionUID = 1L;
     
     protected static float linewidth = 2.0f;

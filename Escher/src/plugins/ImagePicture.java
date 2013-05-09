@@ -47,8 +47,6 @@ import java.io.PrintWriter;
 import java.net.URL;
 
 public class ImagePicture extends Picture {
-    private static final String svnid =
-	"$Id: ImagePicture.java 365 2008-06-11 17:11:29Z mike $";
     private static final long serialVersionUID = 1L;
     
     public transient Image image;

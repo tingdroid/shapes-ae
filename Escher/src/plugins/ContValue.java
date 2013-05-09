@@ -46,8 +46,6 @@ import funbase.Value;
  *  implementing the copy method properly; otherwise the first
  *  invocation of a continuation will spoil it for later invocations. */
 public class ContValue extends Function {
-    private static final String svnid =
-	"$Id: ContValue.java 365 2008-06-11 17:11:29Z mike $";
     private static final long serialVersionUID = 1L;
     
     private Continuation cont;

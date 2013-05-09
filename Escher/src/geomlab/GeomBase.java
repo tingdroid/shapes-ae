@@ -71,8 +71,8 @@ public class GeomBase extends Application {
 
 	public static Context context() {
 		return theApp.getApplicationContext();
-	}	
-	
+	}
+
 	public void setLog(PrintWriter log) {
 		this.log = log;
 	}
@@ -103,7 +103,7 @@ public class GeomBase extends Application {
 	}
 
 	protected boolean eval_loop(Reader reader, boolean display,
-			/* AppFrame */ Object errframe) {
+	/* AppFrame */Object errframe) {
 		Parser parser = new Parser(reader);
 		errtag = "";
 
@@ -133,25 +133,15 @@ public class GeomBase extends Application {
 					}
 				}
 			} catch (Scanner.SyntaxException e) {
-				//if (errframe == null)
-					evalError("Oops: ", e.toString(), e.getErrtag());
-				//else {
-				//	evalError("Oops: ", e.shortMessage(), e.getErrtag());
-				//	errframe.showError(e.getStart(), e.getEnd());
-				//}
+				// if (errframe == null)
+				evalError("Oops: ", e.toString(), e.getErrtag());
+				// else {
+				// evalError("Oops: ", e.shortMessage(), e.getErrtag());
+				// errframe.showError(e.getStart(), e.getEnd());
+				// }
 				return false;
 			}
 		}
-	}
-
-	/** Global method of accessing resource streams */
-	public static InputStream getResourceAsStream(String name) throws IOException, CommandException {
-		InputStream stream = theApp.getResources().getAssets().open(name);
-		if (stream == null)
-			throw new CommandException("Can't read resource " + name,
-					"#noresource");
-		
-		return stream;
 	}
 
 	/** Load from a file */
@@ -180,6 +170,34 @@ public class GeomBase extends Application {
 
 	public File getCurrentFile() {
 		return currentFile;
+	}
+
+	/** Load from a resource in the classpath (e.g. the prelude file) */
+	protected void loadResource(String name) {
+		InputStream stream = getResourceAsStream(name);
+
+		if (stream == null) {
+			errorMessage("Can't read resource " + name, "#noresource");
+			return;
+		}
+
+		Reader reader = new BufferedReader(new InputStreamReader(stream));
+		eval_loop(reader, false, null);
+		try {
+			reader.close();
+		} catch (IOException e) {
+		}
+	}
+
+	/** Global method of accessing resource streams */
+	public static InputStream getResourceAsStream(String name) {
+		InputStream stream = null;
+		try {
+			stream = theApp.getResources().getAssets().open(name);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return stream;
 	}
 
 	public void exit() {
