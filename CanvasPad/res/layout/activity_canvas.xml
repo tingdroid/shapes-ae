@@ -19,7 +19,7 @@
         android:layout_alignParentTop="true" 
         app:exampleColor="#33b5e5"
         app:exampleDimension="24sp"
-        app:exampleDrawable="@drawable/pic_tall"
+        app:exampleDrawable="@drawable/pic_wide"
         app:exampleString="Hello, CanvasView"
         />
     <!-- @android:drawable/ic_menu_add -->
