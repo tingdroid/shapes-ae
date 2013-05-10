@@ -11,7 +11,8 @@
         android:paddingLeft="20dp"
         app:exampleColor="#33b5e5"
         app:exampleDimension="24sp"
-        app:exampleDrawable="@android:drawable/ic_menu_add"
+        app:exampleDrawable="@drawable/ic_launcher"
         app:exampleString="Hello, CanvasView" />
-
+	<!-- ic_menu_add -->
+    
 </FrameLayout>

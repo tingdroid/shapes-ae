@@ -77,7 +77,9 @@ public class CanvasView extends View {
 		mTextWidth = mTextPaint.measureText(mExampleString);
 
 		Paint.FontMetrics fontMetrics = mTextPaint.getFontMetrics();
-		mTextHeight = fontMetrics.bottom;
+		// mTextHeight = fontMetrics.bottom;
+		mTextHeight = Math.abs(fontMetrics.ascent);
+		// mTextHeight = mTextPaint.getFontSpacing();
 	}
 
 	@Override
@@ -102,11 +104,11 @@ public class CanvasView extends View {
 
 		int contentWidth = getWidth() - paddingLeft - paddingRight;
 		int contentHeight = getHeight() - paddingTop - paddingBottom;
-
+		
 		// Draw the text.
 		canvas.drawText(mExampleString, paddingLeft
 				+ (contentWidth - mTextWidth) / 2, paddingTop
-				+ (contentHeight + mTextHeight) / 2, mTextPaint);
+				+ (contentHeight + mTextHeight) / 2, mTextPaint);		
 
 		// Proportion adjustment
 		float pW = mExampleDrawable.getIntrinsicWidth();
@@ -116,23 +118,23 @@ public class CanvasView extends View {
 		
 		int propWidth, propHeight, padWidth, padHeight;
 		
-		if (vW / vH > pW / pH) {
+		if (vW / vH > pW / pH) {         // View is wider than Picture
 			propHeight = Math.round(vH); 
-			propWidth = Math.round(vW * pW / pH); 
+			propWidth = Math.round(vH * pW / pH); 
 			padHeight = 0; 
-			padWidth = 0; 
+			padWidth = Math.round((vW - propWidth) / 2); 
 		} else {
 			propWidth = Math.round(vW); 
-			propHeight = Math.round(vH * pH / pW); 
-			padHeight = 0;
-			padWidth = 0; 
+			propHeight = Math.round(vW * pH / pW); 
+			padHeight = Math.round((vH - propHeight) / 2);
+			padWidth = 0;
 		}
 
 		// Draw the example drawable on top of the text.
 		if (mExampleDrawable != null) {
 			mExampleDrawable.setBounds(
-					paddingLeft + padWidth,  paddingTop + padHeight, 
-					paddingLeft + propWidth, paddingTop + propHeight);
+					paddingLeft + padWidth,             paddingTop + padHeight, 
+					paddingLeft + padWidth + propWidth, paddingTop + padHeight + propHeight);
 			mExampleDrawable.draw(canvas);
 		}
 	}
