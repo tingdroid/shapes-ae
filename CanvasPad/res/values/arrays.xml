@@ -59,6 +59,15 @@
         </array>
     
     <!-- PictureAttr -->
+    <array name="pic_color_extra_wide">
+        <item>color</item>
+        <item>#888888FF</item>
+        <item>#88000000</item>
+        <item>100</item>
+        <item>20</item>
+    </array>
+
+    <!-- PictureAttr -->
     <array name="pic_color_widish">
         <item>color</item>
         <item>#888888FF</item>
