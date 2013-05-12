@@ -5,7 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
+import android.graphics.Rect;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.View;
@@ -18,11 +18,12 @@ public class CanvasView extends View {
 	private int mExampleColor = Color.RED; // TODO: use a default from
 											// R.color...
 	private float mExampleDimension = 0; // TODO: use a default from R.dimen...
-	private Drawable mExampleDrawable;
 
 	private TextPaint mTextPaint;
 	private float mTextWidth;
 	private float mTextHeight;
+
+	private Image image;
 
 	public CanvasView(Context context) {
 		super(context);
@@ -31,7 +32,8 @@ public class CanvasView extends View {
 
 	public CanvasView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		if (isInEditMode()) return;
+		if (isInEditMode())
+			return;
 		init(attrs, 0);
 	}
 
@@ -41,6 +43,10 @@ public class CanvasView extends View {
 	}
 
 	private void init(AttributeSet attrs, int defStyle) {
+		// to avoid issues with hardware acceleration, e.g. cavas.drawPicture()
+		// alternatively done in activity definition in manifest
+		// setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+		
 		// Load attributes
 		final TypedArray a = getContext().obtainStyledAttributes(attrs,
 				R.styleable.CanvasView, defStyle, 0);
@@ -53,12 +59,6 @@ public class CanvasView extends View {
 		// values that should fall on pixel boundaries.
 		mExampleDimension = a.getDimension(
 				R.styleable.CanvasView_exampleDimension, mExampleDimension);
-
-		if (a.hasValue(R.styleable.CanvasView_exampleDrawable)) {
-			mExampleDrawable = a
-					.getDrawable(R.styleable.CanvasView_exampleDrawable);
-			mExampleDrawable.setCallback(this);
-		}
 
 		a.recycle();
 
@@ -85,15 +85,19 @@ public class CanvasView extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		
+
 		if (isInEditMode()) {
 			canvas.drawColor(Color.YELLOW);
-			final Paint textPaint = new TextPaint(); 
+			final Paint textPaint = new TextPaint();
 			canvas.drawText("CanvasView", 10, 25, textPaint);
 			canvas.drawText("Width: " + getWidth(), 10, 45, textPaint);
 			canvas.drawText("Height: " + getHeight(), 10, 65, textPaint);
 			return;
 		}
+
+		if (image != null)
+			canvas.drawColor(Color.YELLOW);
+		//	canvas.drawColor(image.background);
 
 		// TODO: consider storing these as member variables to reduce
 		// allocations per draw cycle.
@@ -104,38 +108,43 @@ public class CanvasView extends View {
 
 		int contentWidth = getWidth() - paddingLeft - paddingRight;
 		int contentHeight = getHeight() - paddingTop - paddingBottom;
-		
+
 		// Draw the text.
 		canvas.drawText(mExampleString, paddingLeft
 				+ (contentWidth - mTextWidth) / 2, paddingTop
-				+ (contentHeight + mTextHeight) / 2, mTextPaint);		
+				+ (contentHeight + mTextHeight) / 2, mTextPaint);
 
-		// Proportion adjustment
-		float pW = mExampleDrawable.getIntrinsicWidth();
-		float pH = mExampleDrawable.getIntrinsicHeight();
-		float vW = contentWidth;
-		float vH = contentHeight;
-		
-		int propWidth, propHeight, padWidth, padHeight;
-		
-		if (vW / vH > pW / pH) {         // View is wider than Picture
-			propHeight = Math.round(vH); 
-			propWidth = Math.round(vH * pW / pH); 
-			padHeight = 0; 
-			padWidth = Math.round((vW - propWidth) / 2); 
-		} else {
-			propWidth = Math.round(vW); 
-			propHeight = Math.round(vW * pH / pW); 
-			padHeight = Math.round((vH - propHeight) / 2);
-			padWidth = 0;
-		}
+		if (image != null) {
+			// Proportion adjustment
+			float pW = image.width;
+			float pH = image.height;
+			float vW = contentWidth;
+			float vH = contentHeight;
 
-		// Draw the example drawable on top of the text.
-		if (mExampleDrawable != null) {
-			mExampleDrawable.setBounds(
-					paddingLeft + padWidth,             paddingTop + padHeight, 
-					paddingLeft + padWidth + propWidth, paddingTop + padHeight + propHeight);
-			mExampleDrawable.draw(canvas);
+			int propWidth, propHeight, padWidth, padHeight;
+
+			if (vW / vH > pW / pH) { // View is wider than Picture
+				propHeight = Math.round(vH);
+				propWidth = Math.round(vH * pW / pH);
+				padHeight = 0;
+				padWidth = Math.round((vW - propWidth) / 2);
+			} else {
+				propWidth = Math.round(vW);
+				propHeight = Math.round(vW * pH / pW);
+				padHeight = Math.round((vH - propHeight) / 2);
+				padWidth = 0;
+			}
+			// Draw the example drawable on top of the text.
+			Rect bounds = new Rect(paddingLeft + padWidth, paddingTop
+					+ padHeight, paddingLeft + padWidth + propWidth, paddingTop
+					+ padHeight + propHeight);
+			if (image.picture != null) {
+				canvas.drawPicture(image.picture, bounds);
+			} else {
+				image.drawable.setBounds(bounds);
+				image.drawable.draw(canvas);
+			}
+			
 		}
 	}
 
@@ -203,22 +212,12 @@ public class CanvasView extends View {
 	}
 
 	/**
-	 * Gets the example drawable attribute value.
-	 * 
-	 * @return The example drawable attribute value.
+	 * @param image
+	 *            the image to set
 	 */
-	public Drawable getExampleDrawable() {
-		return mExampleDrawable;
-	}
-
-	/**
-	 * Sets the view's example drawable attribute value. In the example view,
-	 * this drawable is drawn above the text.
-	 * 
-	 * @param exampleDrawable
-	 *            The example drawable attribute value to use.
-	 */
-	public void setExampleDrawable(Drawable exampleDrawable) {
-		mExampleDrawable = exampleDrawable;
+	public void setImage(Image image) {
+		this.image = image;
+		// this.invalidate();
+		this.postInvalidate();
 	}
 }

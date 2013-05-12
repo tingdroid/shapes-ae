@@ -6,4 +6,35 @@
         android:showAsAction="never"
         android:title="@string/action_settings"/>
 
+    <item
+        android:id="@+id/pic_wide"
+        android:orderInCategory="@integer/pic_category"
+        android:showAsAction="never"
+        android:title="Wide"/>
+    <item
+        android:id="@+id/pic_tall"
+        android:orderInCategory="@integer/pic_category"
+        android:showAsAction="never"
+        android:title="Tall"/>
+    <item
+        android:id="@+id/pic_color_widish"
+        android:orderInCategory="@integer/pic_category"
+        android:showAsAction="never"
+        android:title="Widish Color"/>
+    <item
+        android:id="@+id/pic_color_tallish"
+        android:orderInCategory="@integer/pic_category"
+        android:showAsAction="never"
+        android:title="Tallish Color"/>
+    <item
+        android:id="@+id/pic_man"
+        android:orderInCategory="@integer/pic_category"
+        android:showAsAction="never"
+        android:title="Man Sketch"/>
+    <item
+        android:id="@+id/pic_tree"
+        android:orderInCategory="@integer/pic_category"
+        android:showAsAction="never"
+        android:title="Tree Sketch"/>
+    
 </menu>

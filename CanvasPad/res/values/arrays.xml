@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="PictureAttr">
+        <attr name="picType">
+           <enum name="drawable" value="0"/>
+           <enum name="color" value="1"/>
+           <enum name="sketch" value="2"/>
+        </attr>
+        <attr name="picBackground" format="color" />
+        <attr name="picDrawable" format="color|reference|string" />
+        <attr name="picWidth" format="float" />
+        <attr name="picHeight" format="integer" />
+    </declare-styleable>
+
+    <integer name="pic_category">200</integer>
+    
+    <!-- array name = menu id -->
+    
+    <!-- PictureAttr -->
+    <array name="pic_wide">
+        <item>drawable</item>
+        <item>#FF8888FF</item>
+        <item>@drawable/pic_wide</item>
+        <item></item>
+        <item></item>
+    </array>
+
+    <!-- PictureAttr -->
+    <array name="pic_tall">
+        <item>drawable</item>
+        <item>#FF88FF88</item>
+        <item>@drawable/pic_tall</item>
+        <item></item>
+        <item></item>
+    </array>
+
+    <!-- PictureAttr -->
+    <array name="pic_man">
+        <item>sketch</item>
+        <item>#88E2E2E2</item>
+        <item>128 200 200 255
+            4,2, 6,2, 7,6, 8,2, 10,2, 8,10, 8,12, 12,12, 12,16,
+            10,16, 10,14, 8,14, 8,16, 10,18, 10,20, 8,22, 6,22,
+            4,20, 4,18, 6,16, 6,14, 2,14, 2,12, 6,12, 6,10, 4,2</item>
+        <item>14</item>
+        <item>24</item>
+    </array>
+    
+    <!-- PictureAttr -->
+    <array name="pic_tree">
+        <item>sketch</item>
+        <item>#88E2E2E2</item>
+        <item>128 255 200 200
+            22 7, 16 10, 16 8, 10 11, 10 9, 4 12, 4 8, 2 8, 
+                  2 6, 4 6, 4 2, 10 5, 10 3, 16 6, 16 4, 22 7</item>
+        <item>24</item>
+        <item>14</item>
+        </array>
+    
+    <!-- PictureAttr -->
+    <array name="pic_color_widish">
+        <item>color</item>
+        <item>#888888FF</item>
+        <item>#88FF0000</item>
+        <item>50</item>
+        <item>40</item>
+    </array>
+
+    <!-- PictureAttr -->
+    <array name="pic_color_tallish">
+        <item>color</item>
+        <item>#888888FF</item>
+        <item>#880000FF</item>
+        <item>40</item>
+        <item>50</item>
+    </array>
+    
+</resources>
