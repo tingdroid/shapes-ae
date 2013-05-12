@@ -6,9 +6,11 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 
 public class CanvasActivity extends Activity {
 
+	static Image lastImage;   // save last image to restore when View is re-created
 	CanvasView canvasView;
 
 	@Override
@@ -16,7 +18,11 @@ public class CanvasActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_canvas);
 		canvasView = (CanvasView) findViewById(R.id.canvasView1);
-		selectImage(R.id.pic_wide);
+		if (lastImage == null) {
+			selectImage(R.id.pic_wide);
+		} else {
+			selectImage(lastImage);
+		}
 	}
 
 	@Override
@@ -40,7 +46,14 @@ public class CanvasActivity extends Activity {
 		if (name == null)
 			return false;
 
-		Image image = Image.fromResource(name, getResources());
+		// save last image to restore when View is re-created
+		lastImage = Image.fromResource(name, getResources());
+		return selectImage(lastImage);
+	}
+
+	boolean selectImage(Image image) {
+		if (image == null)
+			return false;
 		canvasView.setImage(image);
 		return true;
 	}

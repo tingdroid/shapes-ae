@@ -97,7 +97,7 @@ public class CanvasView extends View {
 
 		if (image != null)
 			canvas.drawColor(Color.YELLOW);
-		//	canvas.drawColor(image.background);
+		//	canvas.drawColor(lastImage.background);
 
 		// TODO: consider storing these as member variables to reduce
 		// allocations per draw cycle.
@@ -212,8 +212,8 @@ public class CanvasView extends View {
 	}
 
 	/**
-	 * @param image
-	 *            the image to set
+	 * @param lastImage
+	 *            the lastImage to set
 	 */
 	public void setImage(Image image) {
 		this.image = image;
