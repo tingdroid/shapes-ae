@@ -34,11 +34,13 @@ public class CanvasActivity extends Activity {
 			String title = extras.getString(IMAGE_TITLE_EXTRA);
 			if (title != null && title.trim().length() > 0) setTitle(title);
 			selectImage(imageId);
+			getIntent().removeExtra(IMAGE_ID_EXTRA);
 		} else if (lastImage == null) {
 			selectImage(R.id.pic_wide);
 		} else {
 			selectImage(lastImage);
 		}
+		//TODO restore title
 	}
 
 	/** Set up the {@link android.app.ActionBar}, if the API is available. */
