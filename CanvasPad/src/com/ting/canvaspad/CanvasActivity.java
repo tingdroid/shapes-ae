@@ -19,6 +19,7 @@ public class CanvasActivity extends Activity {
 
 	static Image lastImage; // save last image to restore when View is
 							// re-created
+	static String lastTitle;
 	CanvasView canvasView;
 
 	@Override
@@ -32,15 +33,15 @@ public class CanvasActivity extends Activity {
 		if (extras != null && extras.containsKey(IMAGE_ID_EXTRA)) {
 			int imageId = extras.getInt(IMAGE_ID_EXTRA);
 			String title = extras.getString(IMAGE_TITLE_EXTRA);
-			if (title != null && title.trim().length() > 0) setTitle(title);
-			selectImage(imageId);
+			selectImage(imageId, title);
 			getIntent().removeExtra(IMAGE_ID_EXTRA);
-		} else if (lastImage == null) {
-			selectImage(R.id.pic_wide);
-		} else {
+		} else if (lastImage != null) {
+			if (lastTitle != null)
+				setTitle(lastTitle);
 			selectImage(lastImage);
+		} else {
+			selectImage(R.id.pic_wide, getTitle().toString());
 		}
-		//TODO restore title
 	}
 
 	/** Set up the {@link android.app.ActionBar}, if the API is available. */
@@ -64,8 +65,7 @@ public class CanvasActivity extends Activity {
 		// ContextMenuInfo info = item.getMenuInfo();
 		if (item.getOrder() == getResources()
 				.getInteger(R.integer.pic_category)) {
-			setTitle(item.getTitle());
-			return selectImage(item.getItemId());
+			return selectImage(item.getItemId(), item.getTitle().toString());
 		}
 		switch (item.getItemId()) {
 		case android.R.id.home:
@@ -91,11 +91,14 @@ public class CanvasActivity extends Activity {
 		super.finish();
 	}
 
-	boolean selectImage(int menuItemId) {
+	boolean selectImage(int menuItemId, String title) {
 		String name = menuName(menuItemId);
 		if (name == null)
 			return false;
-
+		if (title != null && title.trim().length() > 0) {
+			lastTitle = title.trim();
+			setTitle(lastTitle);			
+		}
 		// save last image to restore when View is re-created
 		lastImage = Image.fromResource(name, getResources());
 		return selectImage(lastImage);
