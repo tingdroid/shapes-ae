@@ -17,7 +17,7 @@ class Entry {
 
 	boolean isValid() {
 		Log.d(getClass().getSimpleName(), String.format(
-				"offset: %d, line: %d, lineCount: %d", offset, line, lineCount));
+				"isValid offset: %d, line: %d, lineCount: %d", offset, line, lineCount));
 		return offset >= 0 && line >= 0 && lineCount > 0;
 	}
 
@@ -51,7 +51,9 @@ class Entry {
 	CharSequence getText() {
 		if (text == null || text.length() == 0 || end == 0)
 			return "";
-		int eol = text.charAt(end - 1) == '\n' ? 1 : 0;
+		int eol = start < end && text.charAt(end - 1) == '\n' ? 1 : 0;
+		Log.d(getClass().getSimpleName(), String.format(
+				"getText start: %d, end: %d, eol: %d", start, end, eol));
 		return text.subSequence(start, end - eol);
 	}
 
